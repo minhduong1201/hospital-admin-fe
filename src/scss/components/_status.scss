@@ -1,0 +1,13 @@
+.status{
+    height:calc(100vh - 60px);
+    .edit{
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    
+}
+.MuiPopover-paper	{
+  border-radius:8px !important;
+  padding-left: 20px;
+}

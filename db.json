@@ -1,0 +1,113 @@
+{
+  "bins": [
+    {
+      "title": "bin1",
+      "weight": 1501,
+      "address": "10 ngõ 29 đường Giap Bát",
+      "status": "empty",
+      "id": 1
+    },
+    {
+      "title": "thung2",
+      "weight": 1231,
+      "address": "nha 111",
+      "status": "empty",
+      "id": 3
+    },
+    {
+      "title": "41",
+      "weight": 400,
+      "address": "nha so 3",
+      "status": "empty",
+      "id": 4
+    },
+    {
+      "title": "6",
+      "weight": 120,
+      "address": "nha so 33",
+      "status": "empty",
+      "id": 6
+    },
+    {
+      "title": "81",
+      "weight": 1231,
+      "address": "nha so 44",
+      "status": "empty",
+      "id": 8
+    },
+    {
+      "title": "91",
+      "weight": 12311,
+      "address": "nha 111",
+      "status": "empty",
+      "id": 9
+    },
+    {
+      "title": "thung2 ",
+      "weight": 150,
+      "address": "nha12",
+      "status": "empty",
+      "id": 10
+    },
+    {
+      "title": "61",
+      "weight": 1202,
+      "address": "nha so 333",
+      "status": "empty",
+      "id": 12
+    },
+    {
+      "title": "thung rac moi bi sua",
+      "weight": 1221,
+      "address": "nha moi12",
+      "status": "empty",
+      "id": 13
+    },
+    {
+      "title": "thung moi nhes",
+      "weight": 120,
+      "address": "dia chi moi",
+      "status": "empty",
+      "id": 14
+    },
+    {
+      "title": "thung moi",
+      "weight": 12,
+      "address": "1",
+      "status": "empty",
+      "id": 15
+    }
+  ],
+  "user":{
+    "id": 1,
+      "name": "Minh Dương",
+      "avatar": "https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/300365135_1826288337763476_5846204144204143790_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=puB5KDeuQAYAX_IPkc4&tn=YjNYucQoFnsS38IL&_nc_ht=scontent.fhan3-4.fna&oh=00_AfBXNwXH52_148QjN7xVmFFUqfB5DgJcbOBIaBLy6bBcUQ&oe=639CDC4C"
+  },
+  "users": [
+    {
+      "id": 1,
+      "name": "Minh Dương",
+      "avatar": "https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/300365135_1826288337763476_5846204144204143790_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=JUcMV0OkC80AX-vFdzz&_nc_ht=scontent.fhan2-5.fna&oh=00_AfC95xeeAeIboq6Cj9SSlx3nLV5MBjxgLmCmLwj2k9RLyg&oe=6383270C"
+    },
+    {
+      "id": 2,
+      "name": "Minh Đức",
+      "avatar": "https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/300365135_1826288337763476_5846204144204143790_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=JUcMV0OkC80AX-vFdzz&_nc_ht=scontent.fhan2-5.fna&oh=00_AfC95xeeAeIboq6Cj9SSlx3nLV5MBjxgLmCmLwj2k9RLyg&oe=6383270C"
+    },
+    {
+      "id": 3,
+      "name": "Hoàng Dũngg",
+      "avatar": "https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/300365135_1826288337763476_5846204144204143790_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=JUcMV0OkC80AX-vFdzz&_nc_ht=scontent.fhan2-5.fna&oh=00_AfC95xeeAeIboq6Cj9SSlx3nLV5MBjxgLmCmLwj2k9RLyg&oe=6383270C"
+    },
+    {
+      "id": 4,
+      "name": "Hào Nguyễn",
+      "avatar": "https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/300365135_1826288337763476_5846204144204143790_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=JUcMV0OkC80AX-vFdzz&_nc_ht=scontent.fhan2-5.fna&oh=00_AfC95xeeAeIboq6Cj9SSlx3nLV5MBjxgLmCmLwj2k9RLyg&oe=6383270C"
+    },
+    {
+      "id": 5,
+      "name": "Lynk Lee",
+      "avatar": "https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/300365135_1826288337763476_5846204144204143790_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=JUcMV0OkC80AX-vFdzz&_nc_ht=scontent.fhan2-5.fna&oh=00_AfC95xeeAeIboq6Cj9SSlx3nLV5MBjxgLmCmLwj2k9RLyg&oe=6383270C"
+    }
+  ]
+}
