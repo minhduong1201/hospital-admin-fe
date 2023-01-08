@@ -16,14 +16,14 @@ import { geoCodingRequest } from "../requestMethod";
 interface ICustomPopOver {
   isOpenPopOver: boolean;
   setIsOpenPopOver: React.Dispatch<React.SetStateAction<boolean>>;
-  handleSubmit: (title: any, weight: any, address: any, id?: any) => void;
-  isEdit: { title: string; weight: number; address: string; id: number };
+  handleSubmit: (title: any, volumn: any, address: any, id?: any) => void;
+  isEdit: { title: string; volumn: number; address: string; id: number };
   setIsEdit: React.Dispatch<
     React.SetStateAction<{
       id: number;
       address: string;
       title: string;
-      weight: number;
+      volumn: number;
     }>
   >;
 }
@@ -80,7 +80,7 @@ export const CustomPopOver = ({
     <Popover
       onClose={() => {
         setIsOpenPopOver(false);
-        setIsEdit({ id: 0, address: "", title: "", weight: 0 });
+        setIsEdit({ id: 0, address: "", title: "", volumn: 0 });
       }}
       open={isOpenPopOver}
       anchorReference="anchorPosition"
@@ -118,15 +118,15 @@ export const CustomPopOver = ({
         </FormControl>
         <FormControl fullWidth sx={{ m: 1 }}>
           <TextField
-            error={!Boolean(isEdit.weight) && isEdit.weight !== 0}
-            id="weight"
-            label="Weight"
+            error={!Boolean(isEdit.volumn) && isEdit.volumn !== 0}
+            id="Volumn"
+            label="Volumn"
             onChange={(e) => {
-              setIsEdit({ ...isEdit, weight: parseInt(e.target.value || "0") });
+              setIsEdit({ ...isEdit, volumn: parseInt(e.target.value || "0") });
             }}
-            defaultValue={isEdit.weight}
+            defaultValue={isEdit.volumn}
             helperText={
-              !Boolean(isEdit.weight) && isEdit.weight !== 0
+              !Boolean(isEdit.volumn) && isEdit.volumn !== 0
                 ? "Dữ liệu nhập phải là số"
                 : ""
             }
@@ -178,12 +178,12 @@ export const CustomPopOver = ({
             Cancel
           </Button>
           <Button
-            disabled={!Boolean(isEdit.weight) && isEdit.weight !== 0}
+            disabled={!Boolean(isEdit.volumn) && isEdit.volumn !== 0}
             sx={{ width: "100px" }}
             onClick={() => {
               handleSubmit(
                 isEdit.title,
-                isEdit.weight,
+                isEdit.volumn,
                 isEdit.address,
                 isEdit.id
               );

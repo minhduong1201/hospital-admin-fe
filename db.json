@@ -2,86 +2,93 @@
   "bins": [
     {
       "title": "bin1",
-      "weight": 1501,
+      "volume": 240,
       "address": "10 ngõ 29 đường Giap Bát",
-      "status": "empty",
+      "status": "full",
       "id": 1
     },
     {
       "title": "thung2",
-      "weight": 1231,
+      "volumn": 120,
       "address": "nha 111",
-      "status": "empty",
+      "status": "middle",
       "id": 3
     },
     {
       "title": "41",
-      "weight": 400,
+      "volumn": 0,
       "address": "nha so 3",
       "status": "empty",
       "id": 4
     },
     {
       "title": "6",
-      "weight": 120,
+      "volumn": 130,
       "address": "nha so 33",
-      "status": "empty",
+      "status": "middle",
       "id": 6
     },
     {
-      "title": "81",
-      "weight": 1231,
-      "address": "nha so 44",
-      "status": "empty",
-      "id": 8
-    },
-    {
       "title": "91",
-      "weight": 12311,
+      "volumn": 111,
       "address": "nha 111",
-      "status": "empty",
+      "status": "few",
       "id": 9
     },
     {
-      "title": "thung2 ",
-      "weight": 150,
+      "title": "thung2 1",
+      "volumn": 50,
       "address": "nha12",
       "status": "empty",
       "id": 10
     },
     {
       "title": "61",
-      "weight": 1202,
+      "volumn": 102,
       "address": "nha so 333",
       "status": "empty",
       "id": 12
     },
     {
       "title": "thung rac moi bi sua",
-      "weight": 1221,
+      "volumn": 121,
       "address": "nha moi12",
       "status": "empty",
       "id": 13
     },
     {
       "title": "thung moi nhes",
-      "weight": 120,
+      "volumn": 120,
       "address": "dia chi moi",
       "status": "empty",
       "id": 14
     },
     {
       "title": "thung moi",
-      "weight": 12,
+      "volumn": 12,
       "address": "1",
       "status": "empty",
       "id": 15
+    },
+    {
+      "title": "thung rac 1",
+      "weight": 120,
+      "address": "Circle K Trần Đại Nghĩa 113 Trần Đại Nghĩa Hanoi",
+      "status": "empty",
+      "id": 16
+    },
+    {
+      "title": "ad",
+      "volumn": 12,
+      "address": "Tigon Cafe Hanoi",
+      "status": "empty",
+      "id": 17
     }
   ],
-  "user":{
+  "user": {
     "id": 1,
-      "name": "Minh Dương",
-      "avatar": "https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/300365135_1826288337763476_5846204144204143790_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=puB5KDeuQAYAX_IPkc4&tn=YjNYucQoFnsS38IL&_nc_ht=scontent.fhan3-4.fna&oh=00_AfBXNwXH52_148QjN7xVmFFUqfB5DgJcbOBIaBLy6bBcUQ&oe=639CDC4C"
+    "name": "Minh Dương",
+    "avatar": "https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/300365135_1826288337763476_5846204144204143790_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=puB5KDeuQAYAX_IPkc4&tn=YjNYucQoFnsS38IL&_nc_ht=scontent.fhan3-4.fna&oh=00_AfBXNwXH52_148QjN7xVmFFUqfB5DgJcbOBIaBLy6bBcUQ&oe=639CDC4C"
   },
   "users": [
     {
