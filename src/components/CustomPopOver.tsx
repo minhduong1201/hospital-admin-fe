@@ -10,20 +10,19 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import Map, { Marker } from "react-map-gl";
+import Map, { LngLat, Marker } from "react-map-gl";
 import { getAddress } from "../redux/apiCalls";
 import { geoCodingRequest } from "../requestMethod";
 interface ICustomPopOver {
   isOpenPopOver: boolean;
   setIsOpenPopOver: React.Dispatch<React.SetStateAction<boolean>>;
-  handleSubmit: (title: any, volumn: any, address: any, id?: any) => void;
-  isEdit: { title: string; volumn: number; address: string; id: number };
+  handleSubmit: (name: any, address: any, long:any, lat:any, id?: any) => void;
+  isEdit: { name: string; address: string; id: number };
   setIsEdit: React.Dispatch<
     React.SetStateAction<{
       id: number;
       address: string;
-      title: string;
-      volumn: number;
+      name: string;
     }>
   >;
 }
@@ -80,7 +79,7 @@ export const CustomPopOver = ({
     <Popover
       onClose={() => {
         setIsOpenPopOver(false);
-        setIsEdit({ id: 0, address: "", title: "", volumn: 0 });
+        setIsEdit({ id: 0, address: "", name: "" });
       }}
       open={isOpenPopOver}
       anchorReference="anchorPosition"
@@ -110,26 +109,10 @@ export const CustomPopOver = ({
         </Typography>
         <FormControl fullWidth sx={{ m: 1 }}>
           <TextField
-            id="title"
-            label="Title"
-            onChange={(e) => setIsEdit({ ...isEdit, title: e.target.value })}
-            defaultValue={isEdit?.title}
-          />
-        </FormControl>
-        <FormControl fullWidth sx={{ m: 1 }}>
-          <TextField
-            error={!Boolean(isEdit.volumn) && isEdit.volumn !== 0}
-            id="Volumn"
-            label="Volumn"
-            onChange={(e) => {
-              setIsEdit({ ...isEdit, volumn: parseInt(e.target.value || "0") });
-            }}
-            defaultValue={isEdit.volumn}
-            helperText={
-              !Boolean(isEdit.volumn) && isEdit.volumn !== 0
-                ? "Dữ liệu nhập phải là số"
-                : ""
-            }
+            id="name"
+            label="name"
+            onChange={(e) => setIsEdit({ ...isEdit, name: e.target.value })}
+            defaultValue={isEdit?.name}
           />
         </FormControl>
         <FormControl fullWidth sx={{ m: 1 }}>
@@ -178,14 +161,14 @@ export const CustomPopOver = ({
             Cancel
           </Button>
           <Button
-            disabled={!Boolean(isEdit.volumn) && isEdit.volumn !== 0}
             sx={{ width: "100px" }}
             onClick={() => {
               handleSubmit(
-                isEdit.title,
-                isEdit.volumn,
+                isEdit.name,
                 isEdit.address,
-                isEdit.id
+                LongLat.lng,
+                LongLat.lat,
+                isEdit.id,
               );
               setIsOpenPopOver(false);
             }}

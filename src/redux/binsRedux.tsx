@@ -13,6 +13,7 @@ const binsSlice = createSlice({
       state.isFetching = true;
     },
     getBinsSuccess: (state, action) => {
+      console.log(action.payload)
       state.isFetching = false;
       state.error = false;
       state.bins=action.payload;
@@ -30,12 +31,12 @@ const binsSlice = createSlice({
         state.error=true;
     },
     deleteBinsSuccess:(state,action)=>{
-      state.bins.splice(state.bins.findIndex((item:any)=>item.id===action.payload),1);
+      state.bins.splice(state.bins.findIndex((item:any)=>item._id===action.payload),1);
       state.isFetching=false;
       state.error=false;
     },
     updateBinsSuccess:(state,action)=>{
-      state.bins[state.bins.findIndex((item:any)=>item.id===action.payload.id)]=action.payload;
+      state.bins[state.bins.findIndex((item:any)=>item._id===action.payload._id)]=action.payload;
       state.isFetching=false;
       state.error=false;
     },

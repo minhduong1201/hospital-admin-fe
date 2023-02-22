@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { Suspense } from 'react'
+import { CContainer, CSpinner } from '@coreui/react'
+import Dashboard from '../components/Dashboard'
 
 const ListStatistic = () => {
   return (
-    <div>ListStatistic</div>
+    <CContainer lg>
+      <Suspense fallback={<CSpinner color="primary" />}>
+        <Dashboard />
+      </Suspense>
+    </CContainer>
   )
 }
 

@@ -23,7 +23,7 @@ import axios from "axios";
 
 export const Status = () => {
   const [isOpenPopOver, setIsOpenPopOver] = useState(false);
-  const [isEdit, setIsEdit] = useState({id:0,address:'',title:'',volumn:0});
+  const [isEdit, setIsEdit] = useState({id:0,address:'',name:''});
   const dispatch = useDispatch();
   const bins = useSelector((state: any) => state.bins.bins);
   useEffect(() => {
@@ -31,18 +31,24 @@ export const Status = () => {
   }, []);
 
   const windowColumns = [
-    { field: "id", headerName: "ID", width: 220 },
+    { field: "_id", headerName: "ID", width: 220 },
     {
-      field: "title",
-      headerName: "Title",
+      field: "name",
+      headerName: "name",
       width: 200,
       renderCell: (params: any) => {
-        return <div className="productListItem">{params.row.title}</div>;
+        return <div className="productListItem">{params.row.name}</div>;
       },
     },
-    { field: "address", headerName: "Address", width: 200 },
-    { field: "volumn", headerName: "Volumn", width: 200 },
-    { field: "status", headerName: "Status", width: 200 },
+    { field: "address", headerName: "Address", width: 300 },
+    {
+      field: "total",
+      headerName: "Status",
+      width: 200,
+      renderCell: (params: any) => {
+        return <div className="productListItem">{params.row.total[0]}</div>;
+      },
+    },
     {
       field: "action",
       headerName: "Action",
@@ -53,12 +59,12 @@ export const Status = () => {
               <button className="edit" onClick={
                 ()=>{
                   setIsOpenPopOver(true);
-                  setIsEdit({id:params.row.id,address:params.row.address,title:params.row.title,volumn:params.row.volumn});}}>Edit</button>
+                  setIsEdit({id:params.row._id,address:params.row.address,name:params.row.name});}}>Edit</button>
             <IconButton className="delete">
               <DeleteIcon
                 color="primary"
                 className=""
-                onClick={() => handleDelete(params.row.id)}
+                onClick={() => handleDelete(params.row._id)}
               />
             </IconButton>
           </>
@@ -71,15 +77,21 @@ export const Status = () => {
     deleteBin(id,dispatch);
     alert("Xóa thành công!");
   };
-  const handleSubmit=(title: any,volumn: any,address: any)=>{
-    if(title&&address&&volumn)
-    addBin({title,volumn,address,status:"empty"},dispatch);
+  const handleSubmit=(name: any,address: any, long:any, lat: any)=>{
+    console.log('add bin')
+    if(name&&address)
+    addBin({name,address,long, lat,    
+    organics : [0],
+    inorganics : [0],
+    recyclables : [0]},dispatch);
     else alert("Vui lòng nhập đủ giá trị");
   }
-  const handleSubmitEdit=(title: any,volumn: any,address: any,id:number)=>{
-    console.log(title,address,volumn,id);
-    if(title&&address&&volumn&&id){
-      updateBin({title,volumn,address,status:"empty",id},dispatch);
+  const handleSubmitEdit=(name: any,address: any, long: any, lat: any, id:number)=>{
+    console.log(name);
+    console.log(address);
+    console.log(id)
+    if(name&&address&&id){
+      updateBin({name,address,long, lat, id},dispatch);
     }
     else alert("Vui lòng nhập đủ giá trị");
   }
@@ -89,7 +101,7 @@ export const Status = () => {
         rows={bins}
         disableSelectionOnClick
         columns={windowColumns}
-        getRowId={(row) => row.id}
+        getRowId={(row) => row._id}
         pageSize={8}
         checkboxSelection
       />
@@ -98,7 +110,7 @@ export const Status = () => {
         sx={{ position: "absolute", bottom: "130px", right: "100px" }}
         onClick={
           () => {
-            setIsEdit({id:0,address:'',title:'',volumn:0});
+            setIsEdit({id:0,address:'',name:''});
             setIsOpenPopOver(true)}}
       >
         Thêm thùng rác

@@ -25,6 +25,7 @@ export const login = async (dispatch: any, user: any) => {
   dispatch(loginStart());
   try {
     const res = await publicRequest.post("/auth/login", user);
+    console.log(res.data)
     dispatch(loginSuccess(res.data));
   } catch (err) {
     dispatch(loginFailure());
@@ -33,10 +34,13 @@ export const login = async (dispatch: any, user: any) => {
 
 export const getBins = async (dispatch: any) => {
   dispatch(getBinsStart());
+  console.log('get bin')
   try {
-    const res = await publicRequest.get("/bins");
+    const res = await userRequest.get("/bin");
+    console.log(res)
     dispatch(getBinsSuccess(res.data));
   } catch (err) {
+    console.log(err)
     dispatch(getBinsFailure());
   }
 };
@@ -44,7 +48,7 @@ export const getBins = async (dispatch: any) => {
 export const getBin = async (id: any, dispatch: (arg0: any) => void) => {
   dispatch(getBinStart());
   try {
-    const res = await publicRequest.get(`/bins/${id}`);
+    const res = await userRequest.get(`/bin/${id}`);
     dispatch(getBinSuccess(res.data));
   } catch (err) {
     dispatch(getBinFailure());
@@ -53,7 +57,7 @@ export const getBin = async (id: any, dispatch: (arg0: any) => void) => {
 
 export const addBin = async (bin: any, dispatch: (arg0: any) => void) => {
   try {
-    const res = await userRequest.post(`/bins/`, bin);
+    const res = await userRequest.post(`/bin/`, bin);
     console.log(res.data);
     dispatch(addBins(res.data));
   } catch (err) {
@@ -63,7 +67,8 @@ export const addBin = async (bin: any, dispatch: (arg0: any) => void) => {
 
 export const deleteBin = async (id: number, dispatch: (arg0: any) => void) => {
   try {
-    const res = await userRequest.delete(`/bins/${id}`);
+    const listIds = {ids:[id]}
+    await userRequest.post(`/bin/delete-bins-by-ids`, listIds);
     dispatch(deleteBinsSuccess(id));
   } catch (err) {
     console.log(err);
@@ -72,7 +77,8 @@ export const deleteBin = async (id: number, dispatch: (arg0: any) => void) => {
 
 export const updateBin = async (bin:any, dispatch: (arg0: any) => void) => {
   try {
-    const res = await userRequest.put(`/bins/${bin.id}`,bin);
+    const res = await userRequest.put(`/bin/${bin.id}`,bin);
+    console.log(res.data)
     dispatch(updateBinsSuccess(res.data));
   } catch (err) {
     console.log(err);

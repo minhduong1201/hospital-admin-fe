@@ -1,9 +1,25 @@
+@import 'base/base';
+// If you want to override variables do it here
+@import "variables";
+
+$enable-ltr: true;
+$enable-rtl: true;
+
+@import "@coreui/coreui/scss/coreui";
+// Import CoreUI for React components library
 @import 'components/sidebar';
 @import 'components/appbar';
 @import 'components/status';
 @import 'components/custompopover';
 @import 'pages/home';
-@import 'base/base';
+
+// Import Chart.js custom tooltips styles
+@import "@coreui/chartjs/scss/coreui-chartjs";
+
+@import "layout";
+@import "example";
+
+// If you want to add custom CSS you can put it here.
 
 :root{
 
