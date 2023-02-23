@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import logo from "./logo.svg";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import ListStatistic from "./pages/ListStatistic";
 import Statistic from "./pages/Statistic";
@@ -10,6 +10,7 @@ import "./scss/style.scss";
 import { Status } from "./pages/Status";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { useSelector } from "react-redux";
 function App() {
   const [isWindow, setIsWindow] = useState(window.innerWidth > 1212);
   const [isOpenSideBar, setIsOpenSideBar] = useState(isWindow);
@@ -23,17 +24,13 @@ function App() {
       setIsOpenSideBar(window.innerWidth > 1212);
     });
   }, []);
-  const isInLoginOrRegister = window.location.href.includes("login")||
-  window.location.href.includes("register")
+  const currentuser=useSelector((state:any) => state.user.currentUser);
+  const isAdmin = currentuser?.isAdmin || false
   return (
     <div className="App">
       <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-          {!isInLoginOrRegister?
-          <>
+          {isAdmin?
+            <>
             <SideBar isOpen={isOpenSideBar} />
             <div className="page">
               <NavBar
@@ -43,15 +40,21 @@ function App() {
                 isWindow={isWindow}
               />
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={isAdmin?<Home />:<Navigate to="/login" />} />
                 <Route path="/status" element={<Status />} />
-
                 <Route path="/statistic" element={<ListStatistic />} />
                 <Route path="/statistic/:id" element={<Statistic />} />
+                <Route path="/login" element={<Navigate to="/" />} />
+                <Route path="/register" element={<Navigate to="/" />} />
               </Routes>
             </div>
-          </>
-        :<></>}
+            </>:
+             <Routes>
+              <Route path="/" element={<Navigate to="/login" />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+             </Routes>
+          }
       </BrowserRouter>
     </div>
   );

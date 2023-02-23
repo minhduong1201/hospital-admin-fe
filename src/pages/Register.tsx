@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -39,6 +40,7 @@ const Register = () => {
       <button onClick={handleClick} style={{ padding: 10, width:100 }}>
         Register
       </button>
+      <Link to="/login">Return to Login</Link>
     </div>
   );
 };
