@@ -208,101 +208,6 @@ const Dashboard = () => {
           <CCard className="mb-4">
             <CCardHeader style={{fontSize:"24px", fontWeight:'500'}}>Thống kê {" & "} Lượng rác</CCardHeader>
             <CCardBody>
-              {/* <CRow>
-                <CCol xs={12} md={6} xl={6}>
-                  <CRow>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-info py-1 px-3">
-                        <div className="text-medium-emphasis small">
-                          Vô cơ
-                        </div>
-                        <div className="fs-5 fw-semibold">9,123</div>
-                      </div>
-                    </CCol>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">
-                          Recurring Clients
-                        </div>
-                        <div className="fs-5 fw-semibold">22,643</div>
-                      </div>
-                    </CCol>
-                  </CRow>
-
-                  <hr className="mt-0" />
-                  {progressGroupExample1.map((item, index) => (
-                    <div className="progress-group mb-4" key={index}>
-                      <div className="progress-group-prepend">
-                        <span className="text-medium-emphasis small">
-                          {item.title}
-                        </span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="info" value={item.value1} />
-                        <CProgress thin color="danger" value={item.value2} />
-                      </div>
-                    </div>
-                  ))}
-                </CCol>
-
-                <CCol xs={12} md={6} xl={6}>
-                  <CRow>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">
-                          Pageviews
-                        </div>
-                        <div className="fs-5 fw-semibold">78,623</div>
-                      </div>
-                    </CCol>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">
-                          Organic
-                        </div>
-                        <div className="fs-5 fw-semibold">49,123</div>
-                      </div>
-                    </CCol>
-                  </CRow>
-
-                  <hr className="mt-0" />
-
-                  {progressGroupExample2.map((item, index) => (
-                    <div className="progress-group mb-4" key={index}>
-                      <div className="progress-group-header">
-                        <CIcon className="me-2" icon={item.icon} size="lg" />
-                        <span>{item.title}</span>
-                        <span className="ms-auto fw-semibold">
-                          {item.value}%
-                        </span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="warning" value={item.value} />
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="mb-5"></div>
-
-                  {progressGroupExample3.map((item, index) => (
-                    <div className="progress-group" key={index}>
-                      <div className="progress-group-header">
-                        <CIcon className="me-2" icon={item.icon} size="lg" />
-                        <span>{item.title}</span>
-                        <span className="ms-auto fw-semibold">
-                          {item.value}{" "}
-                          <span className="text-medium-emphasis small">
-                            ({item.percent}%)
-                          </span>
-                        </span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="success" value={item.percent} />
-                      </div>
-                    </div>
-                  ))}
-                </CCol>
-              </CRow> */}
 
               <br />
 
@@ -313,8 +218,8 @@ const Dashboard = () => {
                       STT
                     </CTableHeaderCell>
                     <CTableHeaderCell>Tên thùng rác</CTableHeaderCell>
-                    <CTableHeaderCell className="text-left">
-                      Vị trí thùng
+                    <CTableHeaderCell className="text-center">
+                    Vị trí thùng
                     </CTableHeaderCell>
                     <CTableHeaderCell>Rác vô cơ</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
@@ -324,11 +229,12 @@ const Dashboard = () => {
                       Rác tái chế
                     </CTableHeaderCell>
                     <CTableHeaderCell>Tổng</CTableHeaderCell>
+                    <CTableHeaderCell>Ngày tạo</CTableHeaderCell>
                     <CTableHeaderCell>Trạng thái thùng</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {(listBins||[]).map((item: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; address: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; inorganic: number ; organic: number ; recyclable:  number ; status: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, index: number) => (
+                  {(listBins||[]).map((item: { createdAt:any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; address: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; inorganic: number ; organic: number ; recyclable:  number ; status: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, index: number) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
                           {index+1}
@@ -337,7 +243,10 @@ const Dashboard = () => {
                             Thùng {item.name}
                       </CTableDataCell>
                       <CTableDataCell className="text-left">
-                      {item.address}
+                        {/* <div style={{width:'30%'}}> */}
+                        {item.address}
+                        {/* </div> */}
+                      
                  
                       </CTableDataCell>
                       <CTableDataCell>
@@ -353,6 +262,9 @@ const Dashboard = () => {
                       </CTableDataCell>
                       <CTableDataCell>
                        {item.recyclable + item.organic+item.inorganic}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                       {item.createdAt.slice(0,10)}
                       </CTableDataCell>
                       <CTableDataCell>
                        {item.status}
