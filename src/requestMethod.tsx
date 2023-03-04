@@ -3,11 +3,13 @@ import axios from "axios";
 const BASE_URL = "https://smartgarbageapi-production.up.railway.app/api/";
 const BASE_MAPBOX_URL="https://api.mapbox.com/geocoding/v5/mapbox.places/";
 let user: string;
+let currentUser: any;
+console.log(localStorage.getItem("persist:root"))
+if(localStorage.getItem("persist:root")){
  user = JSON.parse(localStorage.getItem("persist:root")||'')?.user;
-
-const currentUser = user && JSON.parse(user).currentUser;
-const TOKEN = currentUser?.token;
-console.log(user)
+ currentUser = user && JSON.parse(user|| '').currentUser;
+}
+const TOKEN = currentUser?.token|| '';
 console.log(TOKEN)
 export const publicRequest = axios.create({
   baseURL: BASE_URL,

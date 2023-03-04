@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   CAvatar,
@@ -53,6 +53,11 @@ import avatar6 from "../assets/images/avatars/6.jpg";
 
 import WidgetsBrand from "../components/WidgetsBrand";
 import WidgetsDropdown from "../components/WidgetsDropdown";
+import axios from 'axios';
+import { userRequest } from "../requestMethod";
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { FormControl, InputLabel, MenuItem } from "@mui/material";
+import { getRandomColor } from "../utils/getRandomColor";
 const date = new Date() as any;
 const getDayAgo = (day: any)=>{
   return (new Date(date - 1000 * 60 * 60 * 24 * day)).toDateString()
@@ -89,188 +94,127 @@ const Dashboard = () => {
     { title: "Sunday", value1: 9, value2: 69 },
   ];
 
-  const progressGroupExample2 = [
-    { title: "Male", icon: cilUser, value: 53 },
-    { title: "Female", icon: cilUserFemale, value: 43 },
-  ];
+  // const progressGroupExample2 = [
+  //   { title: "Male", icon: cilUser, value: 53 },
+  //   { title: "Female", icon: cilUserFemale, value: 43 },
+  // ];
 
-  const progressGroupExample3 = [
-    { title: "Organic Search", icon: cibGoogle, percent: 56, value: "191,235" },
-    { title: "Facebook", icon: cibFacebook, percent: 15, value: "51,223" },
-    { title: "Twitter", icon: cibTwitter, percent: 11, value: "37,564" },
-    { title: "LinkedIn", icon: cibLinkedin, percent: 8, value: "27,319" },
-  ];
-
-  const tableExample = [
-    {
-      avatar: { src: avatar1, status: "success" },
-      user: {
-        name: "Yiorgos Avraamu",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "USA", flag: cifUs },
-      usage: {
-        value: 50,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "success",
-      },
-      payment: { name: "Mastercard", icon: cibCcMastercard },
-      activity: "10 sec ago",
-    },
-    {
-      avatar: { src: avatar2, status: "danger" },
-      user: {
-        name: "Avram Tarasios",
-        new: false,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Brazil", flag: cifBr },
-      usage: {
-        value: 22,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "info",
-      },
-      payment: { name: "Visa", icon: cibCcVisa },
-      activity: "5 minutes ago",
-    },
-    {
-      avatar: { src: avatar3, status: "warning" },
-      user: { name: "Quintin Ed", new: true, registered: "Jan 1, 2021" },
-      country: { name: "India", flag: cifIn },
-      usage: {
-        value: 74,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "warning",
-      },
-      payment: { name: "Stripe", icon: cibCcStripe },
-      activity: "1 hour ago",
-    },
-    {
-      avatar: { src: avatar4, status: "secondary" },
-      user: { name: "Enéas Kwadwo", new: true, registered: "Jan 1, 2021" },
-      country: { name: "France", flag: cifFr },
-      usage: {
-        value: 98,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "danger",
-      },
-      payment: { name: "PayPal", icon: cibCcPaypal },
-      activity: "Last month",
-    },
-    {
-      avatar: { src: avatar5, status: "success" },
-      user: {
-        name: "Agapetus Tadeáš",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Spain", flag: cifEs },
-      usage: {
-        value: 22,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "primary",
-      },
-      payment: { name: "Google Wallet", icon: cibCcApplePay },
-      activity: "Last week",
-    },
-    {
-      avatar: { src: avatar6, status: "danger" },
-      user: {
-        name: "Friderik Dávid",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Poland", flag: cifPl },
-      usage: {
-        value: 43,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "success",
-      },
-      payment: { name: "Amex", icon: cibCcAmex },
-      activity: "Last week",
-    },
-  ];
-
+  // const progressGroupExample3 = [
+  //   { title: "Organic Search", icon: cibGoogle, percent: 56, value: "191,235" },
+  //   { title: "Facebook", icon: cibFacebook, percent: 15, value: "51,223" },
+  //   { title: "Twitter", icon: cibTwitter, percent: 11, value: "37,564" },
+  //   { title: "LinkedIn", icon: cibLinkedin, percent: 8, value: "27,319" },
+  // ];
+  const [listBins, setListBins] = useState<any>();
+  const [dataTrash, setDataTrash] = useState<any>();
+  const [statisticByDay, setStatisticByDay] = useState<any>();
+  const [typeTrash, setTypeTrash] = useState('');
+  useEffect(()=>{
+    const fetch = async()=>{
+      const res = await userRequest.get("/bin");
+      console.log("Check res  :", res)
+      setListBins(res.data);
+      setDataTrash({
+        organic:res.data.map((item: { organic: any; })=>item.organic).reduce(
+          (accumulator: any, currentValue: any) => accumulator + currentValue,
+          0
+        ),
+        inorganic:res.data.map((item: { inorganic: any; })=>item.inorganic).reduce(
+          (accumulator: any, currentValue: any) => accumulator + currentValue,
+          0
+        ),
+        recyclable:res.data.map((item: { recyclable: any; })=>item.recyclable).reduce(
+          (accumulator: any, currentValue: any) => accumulator + currentValue,
+          0
+        ),
+      })
+      const res2 = await userRequest.post("/bin/statistic-trash", {
+        binIds: res.data.map((item: { _id: any; })=>item._id),
+        numDay: 10
+      })
+      console.log("Check res 2 :", res2)
+      setStatisticByDay(res2.data)
+    }
+    fetch()
+  },[])
+  console.log("Check list bins:", listBins)
+  const handleChange = (e: any) =>{
+      setTypeTrash(e.target.value)
+  }
+  const ArrayColor = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#a295e3', '#000000']
   return (
     <>
-      <WidgetsDropdown />
-      <CCard className="mb-4">
+   <WidgetsDropdown dataTrash={dataTrash}/>
+      <CCard className="mb-4" >
         <CCardBody>
-          <CRow>
-            <CCol sm={5}>
+          <CRow style={{marginBottom:'25px'}}>
+            <CCol sm={8}>
               <h4 id="traffic" className="card-title mb-0">
-                Traffic
+                Lượng rác theo ngày
               </h4>
-              <div className="small text-medium-emphasis">
+              {/* <div className="small text-medium-emphasis">
                 January - July 2021
-              </div>
+              </div> */}
             </CCol>
-            <CCol sm={7} className="d-none d-md-block">
-              <CButton color="primary" className="float-end">
-                <CIcon icon={cilCloudDownload} />
-              </CButton>
+            <CCol sm={4} className="d-none d-md-block">
+            <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Chọn loại rác</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={typeTrash}
+          label="Age"
+          onChange={handleChange}
+        >
+          <MenuItem value={'all'}>Tổng rác</MenuItem>
+          <MenuItem value={'organics'}>Hữu cơ</MenuItem>
+          <MenuItem value={'inorganics'}>Vô cơ</MenuItem>
+          <MenuItem value={'recyclables'}>Tái chế</MenuItem>
+        </Select>
+      </FormControl> 
             </CCol>
           </CRow>
           <CChart
             type="line"
             data={{
             labels: [getDayAgo(9), getDayAgo(8), getDayAgo(7), getDayAgo(6), getDayAgo(5), getDayAgo(4), getDayAgo(3), getDayAgo(2), getDayAgo(1),date.toDateString()],
-              datasets: [
-                {
-                  label: "My First dataset",
-                  backgroundColor: "rgba(220, 220, 220, 0.2)",
-                  borderColor: "rgba(220, 220, 220, 1)",
-                  pointBackgroundColor: "rgba(220, 220, 220, 1)",
-                  pointBorderColor: "#fff",
-                  data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 30],
-                },
-                {
-                  label: "My Second dataset",
-                  backgroundColor: "rgba(151, 187, 205, 0.2)",
-                  borderColor: "rgba(151, 187, 205, 1)",
-                  pointBackgroundColor: "rgba(151, 187, 205, 1)",
-                  pointBorderColor: "#fff",
-                  data: [50, 12, 28, 29, 7, 25, 12, 70, 60, 30],
-                },
-              ],
+            datasets:statisticByDay && statisticByDay.map((item: { name: any; recyclables: any; organics:any; inorganics:any}, index:number) => {
+              const color = getRandomColor();
+              // const type = typeTrash;
+              const sum=[];
+              for(var i = 0; i < 10; i++){
+                sum.push(item.inorganics[i]+item.organics[i]+item.recyclables[i]);
+             }
+              return {
+                label: `Thung ${item.name}`,
+                    backgroundColor: ArrayColor[index],
+                    borderColor: ArrayColor[index],
+                    pointBackgroundColor: "rgba(220, 220, 220, 1)",
+                    pointBorderColor: "#fff",
+                    // data: item.recyclables,
+                    data: typeTrash == 'recyclables' ? item.recyclables : typeTrash=='organics' ? item.organics : typeTrash =='inorganics' ? item.inorganics : sum
+
+              }
+            })
             }}
           />
         </CCardBody>
-        <CCardFooter>
-          <CRow xs={{ cols: 1 }} md={{ cols: 5 }} className="text-center">
-            {progressExample.map((item, index) => (
-              <CCol className="mb-sm-2 mb-0" key={index}>
-                <div className="text-medium-emphasis">{item.title}</div>
-                <strong>
-                  {item.value} ({item.percent}%)
-                </strong>
-                <CProgress
-                  thin
-                  className="mt-2"
-                  color={item.color}
-                  value={item.percent}
-                />
-              </CCol>
-            ))}
-          </CRow>
-        </CCardFooter>
       </CCard>
 
-      <WidgetsBrand withCharts />
+      {/* <WidgetsBrand withCharts />  */}
 
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {" & "} Sales</CCardHeader>
+            <CCardHeader style={{fontSize:"24px", fontWeight:'500'}}>Thống kê {" & "} Lượng rác</CCardHeader>
             <CCardBody>
-              <CRow>
+              {/* <CRow>
                 <CCol xs={12} md={6} xl={6}>
                   <CRow>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-info py-1 px-3">
                         <div className="text-medium-emphasis small">
-                          New Clients
+                          Vô cơ
                         </div>
                         <div className="fs-5 fw-semibold">9,123</div>
                       </div>
@@ -358,7 +302,7 @@ const Dashboard = () => {
                     </div>
                   ))}
                 </CCol>
-              </CRow>
+              </CRow> */}
 
               <br />
 
@@ -366,68 +310,52 @@ const Dashboard = () => {
                 <CTableHead color="light">
                   <CTableRow>
                     <CTableHeaderCell className="text-center">
-                      <CIcon icon={cilPeople} />
+                      STT
                     </CTableHeaderCell>
-                    <CTableHeaderCell>User</CTableHeaderCell>
+                    <CTableHeaderCell>Tên thùng rác</CTableHeaderCell>
+                    <CTableHeaderCell className="text-left">
+                      Vị trí thùng
+                    </CTableHeaderCell>
+                    <CTableHeaderCell>Rác vô cơ</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
-                      Country
+                      Rác hữu cơ
                     </CTableHeaderCell>
-                    <CTableHeaderCell>Usage</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
-                      Payment Method
+                      Rác tái chế
                     </CTableHeaderCell>
-                    <CTableHeaderCell>Activity</CTableHeaderCell>
+                    <CTableHeaderCell>Tổng</CTableHeaderCell>
+                    <CTableHeaderCell>Trạng thái thùng</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
+                  {(listBins||[]).map((item: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; address: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; inorganic: number ; organic: number ; recyclable:  number ; status: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, index: number) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
-                        <CAvatar
-                          size="md"
-                          src={item.avatar.src}
-                          status={item.avatar.status}
-                        />
+                          {index+1}
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div>{item.user.name}</div>
-                        <div className="small text-medium-emphasis">
-                          <span>{item.user.new ? "New" : "Recurring"}</span> |
-                          Registered: {item.user.registered}
-                        </div>
+                            Thùng {item.name}
+                      </CTableDataCell>
+                      <CTableDataCell className="text-left">
+                      {item.address}
+                 
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item.inorganic}
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon
-                          size="xl"
-                          icon={item.country.flag}
-                          title={item.country.name}
-                        />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>{item.usage.value}%</strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              {item.usage.period}
-                            </small>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          color={item.usage.color}
-                          value={item.usage.value}
-                        />
+                      {item.organic}
+
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
+                      {item.recyclable}
+
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="small text-medium-emphasis">
-                          Last login
-                        </div>
-                        <strong>{item.activity}</strong>
+                       {item.recyclable + item.organic+item.inorganic}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                       {item.status}
                       </CTableDataCell>
                     </CTableRow>
                   ))}

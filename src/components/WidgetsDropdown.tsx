@@ -16,7 +16,9 @@ const date = new Date() as any;
 const getDayAgo = (day: any)=>{
   return (new Date(date - 1000 * 60 * 60 * 24 * day)).toDateString()
 }
-const WidgetsDropdown = () => {
+const WidgetsDropdown = (props: any) => {
+  const {dataTrash} = props;
+  console.log("Check data trash :", dataTrash)
   return (
     <CRow>
       <CCol sm={6} lg={3}>
@@ -25,10 +27,10 @@ const WidgetsDropdown = () => {
           color="primary"
           value={
             <>
-              26K{' '}
-              <span className="fs-6 fw-normal">
+              {dataTrash && dataTrash.inorganic}{' '}
+              {/* <span className="fs-6 fw-normal">
                 (-12.4% <CIcon icon={cilArrowBottom} />)
-              </span>
+              </span> */}
             </>
           }
           title="Vô cơ"
@@ -112,10 +114,10 @@ const WidgetsDropdown = () => {
           color="info"
           value={
             <>
-              $6.200{' '}
-              <span className="fs-6 fw-normal">
+              {dataTrash && dataTrash.organic}{' '}
+              {/* <span className="fs-6 fw-normal">
                 (40.9% <CIcon icon={cilArrowTop} />)
-              </span>
+              </span> */}
             </>
           }
           title="Hữu cơ"
@@ -198,10 +200,10 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-              2.49{' '}
-              <span className="fs-6 fw-normal">
+              {dataTrash && dataTrash.recyclable}{' '}
+              {/* <span className="fs-6 fw-normal">
                 (84.7% <CIcon icon={cilArrowTop} />)
-              </span>
+              </span> */}
             </>
           }
           title="Tái chế"
@@ -271,10 +273,10 @@ const WidgetsDropdown = () => {
           color="danger"
           value={
             <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
+              {dataTrash && (dataTrash.recyclable+dataTrash.organic+dataTrash.inorganic)}{' '}
+              {/* <span className="fs-6 fw-normal">
                 (-23.6% <CIcon icon={cilArrowBottom} />)
-              </span>
+              </span> */}
             </>
           }
           title="Tổng"
