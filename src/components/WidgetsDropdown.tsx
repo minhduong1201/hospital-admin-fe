@@ -27,7 +27,7 @@ const WidgetsDropdown = (props: any) => {
           color="primary"
           value={
             <>
-              {dataTrash && dataTrash.inorganic}{' '}
+              {dataTrash && ((dataTrash.inorganic)/dataTrash.numberBin).toFixed(2)} %{' '}
               {/* <span className="fs-6 fw-normal">
                 (-12.4% <CIcon icon={cilArrowBottom} />)
               </span> */}
@@ -114,7 +114,8 @@ const WidgetsDropdown = (props: any) => {
           color="info"
           value={
             <>
-              {dataTrash && dataTrash.organic}{' '}
+                            {dataTrash && ((dataTrash.organic)/dataTrash.numberBin).toFixed(2)} %{' '}
+
               {/* <span className="fs-6 fw-normal">
                 (40.9% <CIcon icon={cilArrowTop} />)
               </span> */}
@@ -200,7 +201,8 @@ const WidgetsDropdown = (props: any) => {
           color="warning"
           value={
             <>
-              {dataTrash && dataTrash.recyclable}{' '}
+              {dataTrash && ((dataTrash.recyclable)/dataTrash.numberBin).toFixed(2)} %{' '}
+
               {/* <span className="fs-6 fw-normal">
                 (84.7% <CIcon icon={cilArrowTop} />)
               </span> */}
@@ -273,7 +275,7 @@ const WidgetsDropdown = (props: any) => {
           color="danger"
           value={
             <>
-              {dataTrash && (dataTrash.recyclable+dataTrash.organic+dataTrash.inorganic)}{' '}
+              {dataTrash && ((dataTrash.recyclable+dataTrash.organic+dataTrash.inorganic)/(3*dataTrash.numberBin)).toFixed(2)} %{' '}
               {/* <span className="fs-6 fw-normal">
                 (-23.6% <CIcon icon={cilArrowBottom} />)
               </span> */}

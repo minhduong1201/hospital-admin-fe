@@ -56,6 +56,7 @@ const Dashboard = () => {
           (accumulator: any, currentValue: any) => accumulator + currentValue,
           0
         ),
+        numberBin: res.data.length
       })
       const res2 = await userRequest.post("/bin/statistic-trash", {
         binIds: res.data.map((item: { _id: any; })=>item._id),
