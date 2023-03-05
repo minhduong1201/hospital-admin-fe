@@ -21,14 +21,28 @@ import {
   logoutSuccess,
 } from "./userRedux";
 
+export const register = async (dispatch: any, user: any) => {
+  dispatch(loginStart());
+  try {
+    const res = await publicRequest.post("/auth/register", user);
+    dispatch(loginSuccess(res.data));
+    alert("Đăng ký thành công!")
+  } catch (err) {
+    dispatch(loginFailure());
+    alert("Tên đăng nhập và mật khẩu này đã tồn tại!")
+  }
+};
+
 export const login = async (dispatch: any, user: any) => {
   dispatch(loginStart());
   try {
     const res = await publicRequest.post("/auth/login", user);
     console.log(res.data)
     dispatch(loginSuccess(res.data));
+    alert("Đăng nhập thành công!")
   } catch (err) {
     dispatch(loginFailure());
+    alert("Vui lòng nhập đúng tên đăng nhập và mật khẩu!")
   }
 };
 
@@ -78,7 +92,6 @@ export const deleteBin = async (id: number, dispatch: (arg0: any) => void) => {
 export const updateBin = async (bin:any, dispatch: (arg0: any) => void) => {
   try {
     const res = await userRequest.put(`/bin/${bin.id}`,bin);
-    console.log(res.data)
     dispatch(updateBinsSuccess(res.data));
   } catch (err) {
     console.log(err);

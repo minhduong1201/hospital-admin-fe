@@ -44,16 +44,7 @@ export const CustomPopOver = ({
           .get(`/${long},${lat}.json?types=poi&access_token=${token}`)
           .then((res) => {
             console.log(
-              res.data.features[0].place_name
-                .split(",")
-                .reduce((prev: any, curr: any, index: number) => {
-                  if (
-                    index >=
-                    res.data.features[0].place_name.split(",").length - 2
-                  )
-                    return prev;
-                  return prev + curr;
-                })
+              res.data
             );
             setIsEdit({
               ...isEdit,

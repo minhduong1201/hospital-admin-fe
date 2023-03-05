@@ -120,10 +120,12 @@ export const NavBar = ({
           className="right-navbar"
           sx={{
             display: "flex",
-            width: "100px",
+            width: "200px",
             justifyContent: "space-around",
+            alignItems: 'center'
           }}
         >
+          <span > Đăng xuất</span>
           <Badge
             badgeContent={quantity}
             color="primary"

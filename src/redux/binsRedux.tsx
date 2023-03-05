@@ -23,7 +23,8 @@ const binsSlice = createSlice({
       state.error = true;
     },
     addBins:(state,action)=>{
-        state.bins.push(action.payload);
+       const newBin = {...action.payload, status: 0, organic: 0 ,inorganic: 0 , recyclable: 0}
+        state.bins.push(newBin);
         state.isFetching=false;
     },
     addBinsFailure:(state)=>{

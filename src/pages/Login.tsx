@@ -10,10 +10,7 @@ const Login = () => {
 
   const handleClick = (e: any) => {
     e.preventDefault();
-    console.log(username);
-    console.log(password);
     login(dispatch, { username, password });
-    alert("đăng nhập thành công!")
   };
 
   return (

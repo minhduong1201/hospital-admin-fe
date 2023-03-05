@@ -4,7 +4,8 @@
       rgb(170, 204, 238),
       rgb(25, 118, 210)
     );
-    height: 300vh;
+    min-height:100vh;
+    max-height: 300vh;
     color: white;
     transition:  0.7s ease;
     .sidebar-header {
