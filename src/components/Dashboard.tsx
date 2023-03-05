@@ -19,39 +19,7 @@ import {
   CTableRow,
 } from "@coreui/react";
 import { CChart, CChartLine } from "@coreui/react-chartjs";
-import { getStyle, hexToRgba } from "@coreui/utils";
-import CIcon from "@coreui/icons-react";
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from "@coreui/icons";
-
-import avatar1 from "../assets/images/avatars/1.jpg";
-import avatar2 from "../assets/images/avatars/2.jpg";
-import avatar3 from "../assets/images/avatars/3.jpg";
-import avatar4 from "../assets/images/avatars/4.jpg";
-import avatar5 from "../assets/images/avatars/5.jpg";
-import avatar6 from "../assets/images/avatars/6.jpg";
-
-import WidgetsBrand from "../components/WidgetsBrand";
+import style from "./styles.module.scss"
 import WidgetsDropdown from "../components/WidgetsDropdown";
 import axios from 'axios';
 import { userRequest } from "../requestMethod";
@@ -66,45 +34,6 @@ const Dashboard = () => {
   const random = (min: any, max: any) =>
     Math.floor(Math.random() * (max - min + 1) + min);
 
-  const progressExample = [
-    { title: "Visits", value: "29.703 Users", percent: 40, color: "success" },
-    { title: "Unique", value: "24.093 Users", percent: 20, color: "info" },
-    {
-      title: "Pageviews",
-      value: "78.706 Views",
-      percent: 60,
-      color: "warning",
-    },
-    { title: "New Users", value: "22.123 Users", percent: 80, color: "danger" },
-    {
-      title: "Bounce Rate",
-      value: "Average Rate",
-      percent: 40.15,
-      color: "primary",
-    },
-  ];
-
-  const progressGroupExample1 = [
-    { title: "Monday", value1: 34, value2: 78 },
-    { title: "Tuesday", value1: 56, value2: 94 },
-    { title: "Wednesday", value1: 12, value2: 67 },
-    { title: "Thursday", value1: 43, value2: 91 },
-    { title: "Friday", value1: 22, value2: 73 },
-    { title: "Saturday", value1: 53, value2: 82 },
-    { title: "Sunday", value1: 9, value2: 69 },
-  ];
-
-  // const progressGroupExample2 = [
-  //   { title: "Male", icon: cilUser, value: 53 },
-  //   { title: "Female", icon: cilUserFemale, value: 43 },
-  // ];
-
-  // const progressGroupExample3 = [
-  //   { title: "Organic Search", icon: cibGoogle, percent: 56, value: "191,235" },
-  //   { title: "Facebook", icon: cibFacebook, percent: 15, value: "51,223" },
-  //   { title: "Twitter", icon: cibTwitter, percent: 11, value: "37,564" },
-  //   { title: "LinkedIn", icon: cibLinkedin, percent: 8, value: "27,319" },
-  // ];
   const [listBins, setListBins] = useState<any>();
   const [dataTrash, setDataTrash] = useState<any>();
   const [statisticByDay, setStatisticByDay] = useState<any>();
@@ -150,7 +79,7 @@ const Dashboard = () => {
           <CRow style={{marginBottom:'25px'}}>
             <CCol sm={8}>
               <h4 id="traffic" className="card-title mb-0">
-                Lượng rác theo ngày
+                Lượng rác theo ngày (%)
               </h4>
               {/* <div className="small text-medium-emphasis">
                 January - July 2021
@@ -183,7 +112,7 @@ const Dashboard = () => {
               // const type = typeTrash;
               const sum=[];
               for(var i = 0; i < 10; i++){
-                sum.push(item.inorganics[i]+item.organics[i]+item.recyclables[i]);
+                sum.push(((item.inorganics[i]+item.organics[i]+item.recyclables[i])/3).toFixed(2));
              }
               return {
                 label: `Thung ${item.name}`,
@@ -207,7 +136,7 @@ const Dashboard = () => {
         <CCol xs>
           <CCard className="mb-4">
             <CCardHeader style={{fontSize:"24px", fontWeight:'500'}}>Thống kê {" & "} Lượng rác</CCardHeader>
-            <CCardBody>
+            <CCardBody className={style.table}>
 
               <br />
 
@@ -221,16 +150,15 @@ const Dashboard = () => {
                     <CTableHeaderCell className="text-center">
                     Vị trí thùng
                     </CTableHeaderCell>
-                    <CTableHeaderCell>Rác vô cơ</CTableHeaderCell>
+                    <CTableHeaderCell>Rác vô cơ (%)</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
-                      Rác hữu cơ
+                      Rác hữu cơ (%)
                     </CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
-                      Rác tái chế
+                      Rác tái chế (%)
                     </CTableHeaderCell>
-                    <CTableHeaderCell>Tổng</CTableHeaderCell>
+                    <CTableHeaderCell>Tổng (%) </CTableHeaderCell>
                     <CTableHeaderCell>Ngày tạo</CTableHeaderCell>
-                    <CTableHeaderCell>Trạng thái thùng</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -261,13 +189,10 @@ const Dashboard = () => {
 
                       </CTableDataCell>
                       <CTableDataCell>
-                       {item.recyclable + item.organic+item.inorganic}
+                       {((item.recyclable + item.organic+item.inorganic)/3).toFixed(2)}
                       </CTableDataCell>
                       <CTableDataCell>
                        {item.createdAt.slice(0,10)}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                       {item.status}
                       </CTableDataCell>
                     </CTableRow>
                   ))}
