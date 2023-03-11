@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import Map, { LngLat, Marker } from "react-map-gl";
 import { getAddress } from "../redux/apiCalls";
 import { geoCodingRequest } from "../requestMethod";
+import { useDispatch, useSelector } from "react-redux";
 interface ICustomPopOver {
   isOpenPopOver: boolean;
   setIsOpenPopOver: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,6 +34,8 @@ export const CustomPopOver = ({
   isEdit,
   setIsEdit,
 }: ICustomPopOver) => {
+  const dispatch = useDispatch();
+  const listLongLat = useSelector((state: any) => state.bins.bins.map((bin:any) => ({long:bin.long, lat: bin.lat})));
   const [LongLat, setLongLat] = useState({ lng: 105.844, lat: 21.005 });
   let token =
     "pk.eyJ1IjoiaGVsbG93b3JsZDIwMDEiLCJhIjoiY2xibHpxbG1lMGNkdzNvbDkyajh6cDViOCJ9.4_YKoVFcV2SMHCZ73YwpLA";
@@ -125,7 +128,15 @@ export const CustomPopOver = ({
           mapStyle="mapbox://styles/mapbox/streets-v9"
           mapboxAccessToken={token}
           onClick={handleClickMap}
-        >
+        >    
+        {listLongLat.map((longLat: any)=>(
+          <Marker
+          longitude={longLat.long}
+          latitude={longLat.lat}
+          color="blue"
+          anchor="center"
+        />
+        ))}
           <Marker
             longitude={LongLat.lng}
             latitude={LongLat.lat}

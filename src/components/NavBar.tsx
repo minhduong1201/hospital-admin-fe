@@ -14,11 +14,12 @@ import Typography from "@mui/material/Typography";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import { Menu } from "@mui/material";
+import { logoutSuccess } from "../redux/userRedux";
 const breadCrumbMap: { [key: string]: string } = {
   "/statistic": "Thống kê",
   "/status": "Xem lượng rác",
@@ -88,6 +89,7 @@ export const NavBar = ({
   setIsOpenSideBar: Dispatch<SetStateAction<boolean>>;
   isWindow:boolean
 }) => {
+  const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
   console.log(user.currentUser.avatar);
   return (
@@ -125,7 +127,7 @@ export const NavBar = ({
             alignItems: 'center'
           }}
         >
-          <span > Đăng xuất</span>
+          <span style={{cursor:"pointer"}} onClick={()=> dispatch(logoutSuccess())}> Đăng xuất</span>
           <Badge
             badgeContent={quantity}
             color="primary"
