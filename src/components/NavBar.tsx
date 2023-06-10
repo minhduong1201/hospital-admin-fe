@@ -19,10 +19,13 @@ import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import { Menu } from "@mui/material";
-import { logoutSuccess } from "../redux/userRedux";
+import { logoutSuccess } from "../redux/EmployeeRedux.js";
+import { postHospitalSuccess } from "../redux/hospitalRedux.js";
 const breadCrumbMap: { [key: string]: string } = {
   "/statistic": "Thống kê",
-  "/status": "Xem lượng rác",
+  "/customers": "Quản lý bệnh nhân",
+  "/employees": "Quản lý nhân viên",
+  "/managers": "Người quản lý"
 };
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -82,16 +85,15 @@ export const NavBar = ({
   quantity,
   isOpen,
   setIsOpenSideBar,
-  isWindow
+  isWindow,
 }: {
   quantity: number;
   isOpen: boolean;
   setIsOpenSideBar: Dispatch<SetStateAction<boolean>>;
-  isWindow:boolean
+  isWindow: boolean;
 }) => {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
-  console.log(user.currentUser.avatar);
   return (
     <AppBar position="static">
       <Toolbar>
@@ -103,19 +105,16 @@ export const NavBar = ({
             alignItems: "center",
           }}
         >
-          {!isWindow ? (
-            <IconButton
-              onClick={() => {
-                setIsOpenSideBar(!isOpen);
-              }}
-              aria-label="menu-icon"
-              color="primary"
-            >
-              <MenuIcon />
-            </IconButton>
-          ) : (
-            <></>
-          )}
+          <IconButton
+            onClick={() => {
+              setIsOpenSideBar(!isOpen);
+            }}
+            aria-label="menu-icon"
+            color="primary"
+          >
+            <MenuIcon />
+          </IconButton>
+
           <BreadCrumb />
         </Box>
         <Box
@@ -124,10 +123,16 @@ export const NavBar = ({
             display: "flex",
             width: "200px",
             justifyContent: "space-around",
-            alignItems: 'center'
+            alignItems: "center",
           }}
         >
-          <span style={{cursor:"pointer"}} onClick={()=> dispatch(logoutSuccess())}> Đăng xuất</span>
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {dispatch(logoutSuccess()); dispatch(postHospitalSuccess(null)); }}
+          >
+            {" "}
+            Đăng xuất
+          </span>
           <Badge
             badgeContent={quantity}
             color="primary"

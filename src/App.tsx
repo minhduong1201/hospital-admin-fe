@@ -7,9 +7,10 @@ import Statistic from "./pages/Statistic";
 import { SideBar } from "./components/SideBar";
 import { NavBar } from "./components/NavBar";
 import "./scss/style.scss";
-import { Status } from "./pages/Status";
+import { Customers } from "./pages/Customers";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { Employees } from "./pages/Employees";
 import { useSelector } from "react-redux";
 function App() {
   const [isWindow, setIsWindow] = useState(window.innerWidth > 1212);
@@ -25,11 +26,12 @@ function App() {
     });
   }, []);
   const currentuser=useSelector((state:any) => state.user.currentUser);
-  const isAdmin = currentuser?.isAdmin || false
+  console.log(currentuser);
+  
   return (
     <div className="App">
       <BrowserRouter>
-          {isAdmin?
+          {currentuser?
             <>
             <SideBar isOpen={isOpenSideBar} />
             <div className="page">
@@ -40,8 +42,9 @@ function App() {
                 isWindow={isWindow}
               />
               <Routes>
-                <Route path="/" element={isAdmin?<Home />:<Navigate to="/login" />} />
-                <Route path="/status" element={<Status />} />
+                <Route path="/" element={<Home/>} />
+                <Route path="/customers" element={<Customers />} />
+                <Route path="/employees" element={<Employees />} />
                 <Route path="/statistic" element={<ListStatistic />} />
                 <Route path="/statistic/:id" element={<Statistic />} />
                 <Route path="/login" element={<Navigate to="/" />} />
@@ -52,8 +55,10 @@ function App() {
              <Routes>
               <Route path="/" element={<Navigate to="/login" />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/customers" element={<Navigate to="/login" />} />
+              <Route path="/employees" element={<Navigate to="/login" />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/status" element={<Navigate to="/login" />} />
+              <Route path="/customers" element={<Navigate to="/login" />} />
               <Route path="/statistic" element={<Navigate to="/login" />} />
               <Route path="/statistic/:id" element={<Navigate to="/login" />} />
              </Routes>

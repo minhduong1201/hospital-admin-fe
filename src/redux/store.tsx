@@ -1,8 +1,8 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import userReducer from "./userRedux";
-import binReducer from "./binRedux";
-import binsReducer from "./binsRedux";
-
+import employeeReducer from "./EmployeeRedux.js";
+import hospitalReducer from "./hospitalRedux";
+import customerReducer from "./CustomerRedux";
+import employeesReducer from "./EmployeesRedux.js";
 import {
   persistStore,
   persistReducer,
@@ -22,9 +22,10 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  user: userReducer,
-  bins:binsReducer,
-  bin:binReducer,
+  user: employeeReducer,
+  customers: customerReducer,
+  hospital: hospitalReducer,
+  employees: employeesReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

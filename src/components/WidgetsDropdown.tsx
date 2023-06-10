@@ -18,7 +18,6 @@ const getDayAgo = (day: any)=>{
 }
 const WidgetsDropdown = (props: any) => {
   const {dataTrash} = props;
-  console.log("Check data trash :", dataTrash)
   return (
     <CRow>
       <CCol sm={6} lg={3}>

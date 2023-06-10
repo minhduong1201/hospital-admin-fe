@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleClick = (e: any) => {
     e.preventDefault();
-    login(dispatch, { username, password });
+    login(dispatch, { username, password }, "employee");
   };
 
   return (

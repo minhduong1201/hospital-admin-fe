@@ -20,7 +20,7 @@ import {
 } from "@coreui/react";
 import { CChart, CChartLine } from "@coreui/react-chartjs";
 import style from "./styles.module.scss"
-import WidgetsDropdown from "../components/WidgetsDropdown";
+import WidgetsDropdown from "./WidgetsDropdown";
 import axios from 'axios';
 import { userRequest } from "../requestMethod";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -41,7 +41,6 @@ const Dashboard = () => {
   useEffect(()=>{
     const fetch = async()=>{
       const res = await userRequest.get("/bin");
-      console.log("Check res  :", res)
       setListBins(res.data);
       setDataTrash({
         organic:res.data.map((item: { organic: any; })=>item.organic).reduce(
@@ -62,12 +61,10 @@ const Dashboard = () => {
         binIds: res.data.map((item: { _id: any; })=>item._id),
         numDay: 10
       })
-      console.log("Check res 2 :", res2)
       setStatisticByDay(res2.data)
     }
     fetch()
   },[])
-  console.log("Check list bins:", listBins)
   const handleChange = (e: any) =>{
       setTypeTrash(e.target.value)
   }
