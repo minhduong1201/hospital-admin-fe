@@ -5,7 +5,6 @@ import { userRequest } from '../requestMethod';
 export const HeartRateChart = (props) => {
   const [heartRateData, setHeartRateData] = useState([]);
   const userId = props.user._id;
-  console.log(heartRateData);
   useEffect(() => {
     // Gửi yêu cầu API sau mỗi giây
     const interval = setInterval(() => {

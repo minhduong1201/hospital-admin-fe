@@ -128,7 +128,7 @@ export const Customers = () => {
       headerName: "Chat",
       width: 100,
       renderCell: (params) => {
-        return <ChatIcon color="primary" onClick={() => setVisible(true)} style={{ marginLeft: 10 }} />;
+        return <ChatIcon color="primary" onClick={() => setVisible(params.row)} style={{ marginLeft: 10 }} />;
       },
     },
   ];
@@ -182,7 +182,7 @@ export const Customers = () => {
         setIsOpenPopOver={setIsOpenPopOver}
         // handleSubmit={isEdit.id ? handleSubmitEdit : handleSubmit}
       />}
-      {visible && <Chat hospital={hospital} user={selectedUser} visible = {visible} onClose = {() => setVisible(false)}/>}
+      {visible && <Chat hospital={hospital} user={visible} visible = {visible} onClose = {() => setVisible(false)}/>}
     </Box>
   );
 };

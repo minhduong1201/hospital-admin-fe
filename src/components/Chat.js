@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -12,7 +12,8 @@ import {
   IconButton,
 } from "@mui/material";
 import { Send as SendIcon } from "@mui/icons-material";
-import io from 'socket.io-client';
+import io from "socket.io-client";
+import { userRequest } from "../requestMethod";
 
 const ChatPopover = (props) => {
   const { visible, onClose, hospital, user } = props;
@@ -20,9 +21,24 @@ const ChatPopover = (props) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:5000');
+    // Cuộn xuống cuối cùng khi có tin nhắn mới
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  useEffect(() => {
+    const getMessages = async () => {
+      const res = await userRequest.get(
+        `/message?hospitalId=${hospital._id}&customerId=${user._id}`
+      );
+      if (res.data) setMessages(res.data);
+    };
+    getMessages();
+
+    const newSocket = io('http://localhost:5000', { transports: ['websocket'] });
+    console.log(newSocket);
     setSocket(newSocket);
 
     return () => {
@@ -34,36 +50,56 @@ const ChatPopover = (props) => {
     if (!socket) return;
 
     // Lắng nghe sự kiện 'message' từ server và thêm tin nhắn mới vào danh sách
-    socket.on('message', (newMessage) => {
+    socket.on("receive_message", (newMessage) => {
+      if (checkIsReceivedMessage(newMessage))
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
     return () => {
-      socket.off('message');
+      socket.off("message");
     };
   }, [socket]);
+
+  const checkIsReceivedMessage = (message) => {
+    const { hospitalId, customerId, sender } = message;
+    if (
+      hospitalId == hospital._id &&
+      customerId == user._id &&
+      sender == "user"
+    )
+      return true;
+    return false;
+  };
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
 
   const handleKeyDown = (e) => {
-    if(e.which != 13) return;
+    if (e.which != 13) return;
     handleSendMessage();
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputValue.trim() === "") return;
 
     const newMessage = {
       hospitalId: hospital._id,
       customerId: user._id,
       sender: "hospital", // or 'hospital' for messages from the hospital
-      content: inputValue,
+      message: inputValue,
     };
 
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-    setInputValue("");
+    await userRequest.post(`/message`, newMessage).then((res) => {
+      if (200 <= res.status < 300) {
+        socket.emit('message', res.data);
+        setMessages((prevMessages) => [...prevMessages, res.data]);
+        setInputValue("");
+      }
+      else {
+        alert("Không thể gửi tin nhắn")
+      }
+    });
   };
 
   return (
@@ -100,7 +136,7 @@ const ChatPopover = (props) => {
               variant="h6"
               style={{ borderBottom: "1px solid #5a5a5c" }}
             >
-              Chat với ...
+              Chat với {user.name}
             </Typography>
             <Box mt={2} style={{ height: 550, overflow: "auto" }}>
               {messages.map((message, index) => (
@@ -120,9 +156,9 @@ const ChatPopover = (props) => {
                     py={1}
                     px={2}
                   >
-                    <Typography variant="body1">{message.content}</Typography>
+                    <Typography variant="body1">{message.message}</Typography>
                     <Typography variant="caption">
-                      {new Date(message.timestamp).toLocaleTimeString([], {
+                      {new Date(message.createdAt).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
                       })}
@@ -130,6 +166,7 @@ const ChatPopover = (props) => {
                   </Box>
                 </Box>
               ))}
+              <div ref={messagesEndRef} /> {/* Tham chiếu tới phần tử cuối cùng */}
             </Box>
           </Box>
           <Box
