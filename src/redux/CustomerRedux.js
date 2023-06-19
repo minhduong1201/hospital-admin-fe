@@ -15,8 +15,11 @@ const CustomerSlice = createSlice({
         return match ? match : item;
       });
     },
+    addCustomer: (state, action) => {
+      state.push(action.payload);
+    }
   },
 });
 
-export const { getCustomersSuccess, updateCustomers } = CustomerSlice.actions;
+export const { getCustomersSuccess, updateCustomers, addCustomer } = CustomerSlice.actions;
 export default CustomerSlice.reducer;

@@ -14,9 +14,11 @@ import { CustomerPopOver } from "../components/CustomerPopOver";
 import { getCustomers, getCustomersWithHeartRate } from "../redux/apiCalls";
 import { Pagination } from "@mui/material";
 import Chat from "../components/Chat";
+import { AddNewPopOver } from "../components/AddNewPopover";
 
 export const Customers = () => {
   const [isOpenPopOver, setIsOpenPopOver] = useState(false);
+  const [isOpenAddNew, setIsOpenAddNew] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [page, setPage] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -28,7 +30,6 @@ export const Customers = () => {
   const customers = useSelector((state) => state.customers);
   const pageCustomers = customers.slice(startRow, endRow);
   useEffect(() => {
-    console.log("getCustomers");
     if(!hospital) return;
     getCustomers(hospital._id, dispatch);
   }, []);
@@ -137,19 +138,6 @@ export const Customers = () => {
     // deleteBin(id, dispatch);
     alert("Xóa thành công!");
   };
-  const handleSubmit = (name, address, long, lat) => {
-    alert("Vui lòng nhập đủ giá trị");
-  };
-  const handleSubmitEdit = (
-    name,
-    address,
-    long,
-    lat,
-    id
-  ) => {
-    if (name && address && id) {
-    } else alert("Vui lòng nhập đủ giá trị");
-  };
   return (
     <Box className="status">
       <DataGrid
@@ -171,7 +159,7 @@ export const Customers = () => {
         variant="contained"
         sx={{ position: "absolute", bottom: "130px", right: "100px" }}
         onClick={() => {
-          setIsOpenPopOver(true);
+          setIsOpenAddNew(true);
         }}
       >
         Thêm bệnh nhân
@@ -180,8 +168,8 @@ export const Customers = () => {
         selectedUser = {selectedUser}
         isOpenPopOver={isOpenPopOver}
         setIsOpenPopOver={setIsOpenPopOver}
-        // handleSubmit={isEdit.id ? handleSubmitEdit : handleSubmit}
       />}
+      {isOpenAddNew && <AddNewPopOver isOpenPopOver={isOpenAddNew} setIsOpenPopOver={(value) => setIsOpenAddNew(value)} hospital={hospital} type="customer"/>}
       {visible && <Chat hospital={hospital} user={visible} visible = {visible} onClose = {() => setVisible(false)}/>}
     </Box>
   );

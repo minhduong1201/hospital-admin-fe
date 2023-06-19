@@ -1,7 +1,7 @@
 import { publicRequest, userRequest } from "../requestMethod";
 import { postHospitalSuccess } from "./hospitalRedux";
-import { getCustomersSuccess, updateCustomers } from "./CustomerRedux";
-import { getEmployeesSuccess } from "./EmployeesRedux";
+import { addCustomer, getCustomersSuccess, updateCustomers } from "./CustomerRedux";
+import { getEmployeesSuccess, addEmployee } from "./EmployeesRedux";
 import {
   loginStart,
   loginSuccess,
@@ -13,12 +13,9 @@ export const register = async (dispatch, user, type) => {
   dispatch(loginStart());
 
   try {
-    const res = await publicRequest.post(`/auth/register/${type}`, user);
-
-    // dispatch(loginSuccess(res.data));
+    await publicRequest.post(`/auth/register/${type}`, user);
     alert("Đăng ký thành công!");
   } catch (err) {
-    // dispatch(loginFailure());
     alert("Tên đăng nhập và mật khẩu này đã tồn tại!");
   }
 };
@@ -56,7 +53,7 @@ export const getCustomersWithHeartRate = async (customers, dispatch) => {
       const payload = customers.map((customer, index) => ({
         ...customer,
         heart_rate: list[index].data?.value,
-        last_update: list[index].data?.createdAt
+        last_update: list[index].data?.createdAt,
       }));
       console.log(payload);
       dispatch(updateCustomers(payload));
@@ -77,7 +74,7 @@ export const getCustomers = async (hospitalId, dispatch) => {
   }
 };
 
-export const updateEmployee = async (employee, dispatch, id) => {
+export const updateCurrentUser = async (employee, dispatch, id) => {
   try {
     const res = await userRequest.put(`/employees/${id}`, employee);
     dispatch(loginSuccess(res.data));
@@ -85,3 +82,16 @@ export const updateEmployee = async (employee, dispatch, id) => {
     console.log(err);
   }
 };
+
+export const addNewEmployee = async (employee, dispatch, id) => {
+  if (id == undefined || id == null) return;
+  const res = await userRequest.put(`/employees/${id}`, employee);
+  if (res.data && 199 < res.status < 300) dispatch(addEmployee(res.data));
+};
+
+export const addNewCustomer = async (employee, dispatch, id) => {
+  if (id == undefined || id == null) return;
+  const res = await userRequest.put(`/customers/${id}`, employee);
+  if (res.data && 199 < res.status < 300) dispatch(addCustomer(res.data));
+};
+

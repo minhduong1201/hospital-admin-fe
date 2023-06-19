@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
-import ListStatistic from "./pages/ListStatistic";
-import Statistic from "./pages/Statistic";
 import { SideBar } from "./components/SideBar";
 import { NavBar } from "./components/NavBar";
 import "./scss/style.scss";
@@ -26,7 +24,6 @@ function App() {
     });
   }, []);
   const currentuser=useSelector((state:any) => state.user.currentUser);
-  console.log(currentuser);
   
   return (
     <div className="App">
@@ -45,8 +42,6 @@ function App() {
                 <Route path="/" element={<Home/>} />
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/employees" element={<Employees />} />
-                <Route path="/statistic" element={<ListStatistic />} />
-                <Route path="/statistic/:id" element={<Statistic />} />
                 <Route path="/login" element={<Navigate to="/" />} />
                 <Route path="/register" element={<Navigate to="/" />} />
               </Routes>
@@ -59,8 +54,6 @@ function App() {
               <Route path="/employees" element={<Navigate to="/login" />} />
               <Route path="/register" element={<Register />} />
               <Route path="/customers" element={<Navigate to="/login" />} />
-              <Route path="/statistic" element={<Navigate to="/login" />} />
-              <Route path="/statistic/:id" element={<Navigate to="/login" />} />
              </Routes>
           }
       </BrowserRouter>

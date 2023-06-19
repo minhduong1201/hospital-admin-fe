@@ -21,11 +21,13 @@ import IconButton from "@mui/material/IconButton";
 import { Menu } from "@mui/material";
 import { logoutSuccess } from "../redux/EmployeeRedux.js";
 import { postHospitalSuccess } from "../redux/hospitalRedux.js";
+import { getCustomersSuccess } from "../redux/CustomerRedux.js";
+import { getEmployeesSuccess } from "../redux/EmployeesRedux.js";
 const breadCrumbMap: { [key: string]: string } = {
   "/statistic": "Thống kê",
   "/customers": "Quản lý bệnh nhân",
   "/employees": "Quản lý nhân viên",
-  "/managers": "Người quản lý"
+  "/managers": "Người quản lý",
 };
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -128,7 +130,12 @@ export const NavBar = ({
         >
           <span
             style={{ cursor: "pointer" }}
-            onClick={() => {dispatch(logoutSuccess()); dispatch(postHospitalSuccess(null)); }}
+            onClick={() => {
+              dispatch(logoutSuccess());
+              dispatch(postHospitalSuccess(null));
+              dispatch(getCustomersSuccess([]));
+              dispatch(getEmployeesSuccess([]));
+            }}
           >
             {" "}
             Đăng xuất

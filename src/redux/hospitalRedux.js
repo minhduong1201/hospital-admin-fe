@@ -9,11 +9,14 @@ const hospitalSlice = createSlice({
   },
   reducers: {
     postHospitalSuccess: (state, action) => {
-      state.hospital = action.payload;
+      state = {
+        ...state,
+        hospital: action.payload,
+      };
+      return state;
     },
   },
 });
 
-export const { postHospitalSuccess } =
-  hospitalSlice.actions;
+export const { postHospitalSuccess } = hospitalSlice.actions;
 export default hospitalSlice.reducer;

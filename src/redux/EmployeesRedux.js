@@ -7,8 +7,11 @@ const EmployeesSlice=createSlice({
         getEmployeesSuccess:(state, action)=>{
             return action.payload;
         },
+        addEmployee:(state, action) => {
+            state.push(action.payload);
+        }
     }
 })
 
-export const { getEmployeesSuccess} = EmployeesSlice.actions;
+export const { getEmployeesSuccess, addEmployee} = EmployeesSlice.actions;
 export default EmployeesSlice.reducer;
