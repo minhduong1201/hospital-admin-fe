@@ -3,6 +3,7 @@ import employeeReducer from "./EmployeeRedux.js";
 import hospitalReducer from "./hospitalRedux";
 import customerReducer from "./CustomerRedux";
 import employeesReducer from "./EmployeesRedux.js";
+import ChatNotificationRedux from "./ChatNotificationRedux.js";
 import {
   persistStore,
   persistReducer,
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   user: employeeReducer,
   customers: customerReducer,
   hospital: hospitalReducer,
-  employees: employeesReducer
+  employees: employeesReducer,
+  notifications: ChatNotificationRedux
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

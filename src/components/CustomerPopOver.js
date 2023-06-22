@@ -14,30 +14,34 @@ import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { HeartRateChart } from "./HeartRateChart";
+import { userRequest } from "../requestMethod";
+import { updateCustomers } from "../redux/CustomerRedux";
 
 export const CustomerPopOver = ({
   isOpenPopOver,
   setIsOpenPopOver,
-  handleSubmit,
   selectedUser,
   isEmployee,
 }) => {
-  console.log(selectedUser);
   const [tab, setTab] = useState(0);
   const [user, setUser] = useState(selectedUser);
-  const renderInforTab = () => {
-    return;
-  };
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    setUser(selectedUser)
+    setUser(selectedUser);
   }, [selectedUser])
-  console.log(user);
   const {name, address, phone, img,age, heart_rate, last_update} = user;
+
+  const handleSubmit = async () => {
+    await userRequest.put(`/customers/${user._id}`, user).then(res =>{
+      console.log(res);
+      if(res && 199 < res.status < 300) dispatch(updateCustomers([res.data])); 
+      setIsOpenPopOver(null);
+    });
+  }
   return (
     <Popover
       onClose={() => {
-        setIsOpenPopOver(false);
+        setIsOpenPopOver(null);
       }}
       width={1000}
       open={isOpenPopOver}
@@ -133,14 +137,14 @@ export const CustomerPopOver = ({
             sx={{ width: "100px" }}
             color="error"
             variant="contained"
-            onClick={() => setIsOpenPopOver(false)}
+            onClick={() => setIsOpenPopOver(null)}
           >
             Cancel
           </Button>
           <Button
             sx={{ width: "100px" }}
             onClick={() => {
-              setIsOpenPopOver(false);
+              handleSubmit()
             }}
             color="primary"
             variant="contained"

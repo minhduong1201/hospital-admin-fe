@@ -18,12 +18,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
-import { Menu } from "@mui/material";
 import { logoutSuccess } from "../redux/EmployeeRedux.js";
 import { postHospitalSuccess } from "../redux/hospitalRedux.js";
 import { getCustomersSuccess } from "../redux/CustomerRedux.js";
 import { getEmployeesSuccess } from "../redux/EmployeesRedux.js";
-const breadCrumbMap: { [key: string]: string } = {
+import { Menu, MenuItem } from "@mui/material";
+import io from "socket.io-client";
+
+const breadCrumbMap = {
   "/statistic": "Thống kê",
   "/customers": "Quản lý bệnh nhân",
   "/employees": "Quản lý nhân viên",
@@ -87,15 +89,38 @@ export const NavBar = ({
   quantity,
   isOpen,
   setIsOpenSideBar,
-  isWindow,
-}: {
-  quantity: number;
-  isOpen: boolean;
-  setIsOpenSideBar: Dispatch<SetStateAction<boolean>>;
-  isWindow: boolean;
+  selectedUser,
+  setSelectedUser,
 }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state) => state.user);
+  const notifications = useSelector((state) => state.notifications);
+  const [isOpenNotification, setIsOpenNotification] = useState(false);
+  const [socket, setSocket] = useState(null);
+  useEffect(() => {
+    const newSocket = io("http://localhost:5000", {
+      transports: ["websocket"],
+    });
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+    // Lắng nghe sự kiện 'message' từ server và thêm vào hàng đợi thông báo
+    
+
+    return () => {
+      socket.off("message");
+    };
+  }, [socket]);
+
+  const handleViewChat = (user) => {
+    setSelectedUser(user);
+  };
   return (
     <AppBar position="static">
       <Toolbar>
@@ -137,15 +162,18 @@ export const NavBar = ({
               dispatch(getEmployeesSuccess([]));
             }}
           >
-            {" "}
             Đăng xuất
           </span>
           <Badge
+            onClick={() => setIsOpenNotification(true)}
             badgeContent={quantity}
             color="primary"
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           >
-            <NotificationsIcon color="primary" />
+            <NotificationsIcon
+              color="primary"
+              onClick={() => setIsOpenNotification(true)}
+            />
           </Badge>
           <StyledBadge
             overlap="circular"
@@ -155,6 +183,28 @@ export const NavBar = ({
             <Avatar src={user.currentUser.avatar || ""}></Avatar>
           </StyledBadge>
         </Box>
+        <Menu
+          open={isOpenNotification}
+          onClose={() => setIsOpenNotification(false)}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          {notifications.length ? (
+            notifications.map((user) => (
+              <MenuItem onClick={() => handleViewChat(user)}>
+                Bạn có tin nhắn từ {user.name}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem disabled>Không có thông báo</MenuItem>
+          )}
+        </Menu>
       </Toolbar>
     </AppBar>
   );

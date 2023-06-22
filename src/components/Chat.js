@@ -14,13 +14,14 @@ import {
 import { Send as SendIcon } from "@mui/icons-material";
 import io from "socket.io-client";
 import { userRequest } from "../requestMethod";
+import { useDispatch } from "react-redux";
+import { addNotification } from "../redux/ChatNotificationRedux";
 
 const ChatPopover = (props) => {
   const { visible, onClose, hospital, user } = props;
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
-
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -37,8 +38,9 @@ const ChatPopover = (props) => {
     };
     getMessages();
 
-    const newSocket = io('http://localhost:5000', { transports: ['websocket'] });
-    console.log(newSocket);
+    const newSocket = io("http://localhost:5000", {
+      transports: ["websocket"],
+    });
     setSocket(newSocket);
 
     return () => {
@@ -50,9 +52,10 @@ const ChatPopover = (props) => {
     if (!socket) return;
 
     // Lắng nghe sự kiện 'message' từ server và thêm tin nhắn mới vào danh sách
-    socket.on("receive_message", (newMessage) => {
-      if (checkIsReceivedMessage(newMessage))
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    socket.on("receive_message", (data) => {
+      const {message, user} = data;
+      if (!checkIsReceivedMessage(message)) return;
+      setMessages((prevMessages) => [...prevMessages, , message]);
     });
 
     return () => {
@@ -92,12 +95,11 @@ const ChatPopover = (props) => {
 
     await userRequest.post(`/message`, newMessage).then((res) => {
       if (200 <= res.status < 300) {
-        socket.emit('message', res.data);
+        socket.emit("message", res.data);
         setMessages((prevMessages) => [...prevMessages, res.data]);
         setInputValue("");
-      }
-      else {
-        alert("Không thể gửi tin nhắn")
+      } else {
+        alert("Không thể gửi tin nhắn");
       }
     });
   };
@@ -166,7 +168,8 @@ const ChatPopover = (props) => {
                   </Box>
                 </Box>
               ))}
-              <div ref={messagesEndRef} /> {/* Tham chiếu tới phần tử cuối cùng */}
+              <div ref={messagesEndRef} />{" "}
+              {/* Tham chiếu tới phần tử cuối cùng */}
             </Box>
           </Box>
           <Box

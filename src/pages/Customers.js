@@ -16,10 +16,10 @@ import { Pagination } from "@mui/material";
 import Chat from "../components/Chat";
 import { AddNewPopOver } from "../components/AddNewPopover";
 
-export const Customers = () => {
+export const Customers = (props) => {
+  const {selectedUser, setSelectedUser} = props;
   const [isOpenPopOver, setIsOpenPopOver] = useState(false);
   const [isOpenAddNew, setIsOpenAddNew] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [page, setPage] = useState(0);
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
@@ -166,7 +166,7 @@ export const Customers = () => {
       </Button>
       {selectedUser && <CustomerPopOver
         selectedUser = {selectedUser}
-        isOpenPopOver={isOpenPopOver}
+        isOpenPopOver={selectedUser}
         setIsOpenPopOver={setIsOpenPopOver}
       />}
       {isOpenAddNew && <AddNewPopOver isOpenPopOver={isOpenAddNew} setIsOpenPopOver={(value) => setIsOpenAddNew(value)} hospital={hospital} type="customer"/>}
