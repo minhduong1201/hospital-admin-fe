@@ -17,9 +17,20 @@ const CustomerSlice = createSlice({
     },
     addCustomer: (state, action) => {
       state.push(action.payload);
-    }
+    },
+    deleteCustomer: (state, action) => {
+      const index = state.findIndex(
+        (customer) => customer._id == action.payload._id
+      );
+      state.splice(index, 1);
+    },
   },
 });
 
-export const { getCustomersSuccess, updateCustomers, addCustomer } = CustomerSlice.actions;
+export const {
+  getCustomersSuccess,
+  updateCustomers,
+  addCustomer,
+  deleteCustomer,
+} = CustomerSlice.actions;
 export default CustomerSlice.reducer;

@@ -16,6 +16,7 @@ import io from "socket.io-client";
 import { userRequest } from "../requestMethod";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../redux/ChatNotificationRedux";
+import { alertError } from "../utils/tools";
 
 const ChatPopover = (props) => {
   const { visible, onClose, hospital, user } = props;
@@ -23,7 +24,7 @@ const ChatPopover = (props) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef(null);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     // Cuộn xuống cuối cùng khi có tin nhắn mới
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,9 +54,9 @@ const ChatPopover = (props) => {
 
     // Lắng nghe sự kiện 'message' từ server và thêm tin nhắn mới vào danh sách
     socket.on("receive_message", (data) => {
-      const {message, user} = data;
+      const {message} = data;
       if (!checkIsReceivedMessage(message)) return;
-      setMessages((prevMessages) => [...prevMessages, , message]);
+      setMessages((prevMessages) => [...prevMessages, message]);
     });
 
     return () => {
@@ -95,11 +96,11 @@ const ChatPopover = (props) => {
 
     await userRequest.post(`/message`, newMessage).then((res) => {
       if (200 <= res.status < 300) {
-        socket.emit("message", res.data);
+        socket.emit("message", {message: res.data});
         setMessages((prevMessages) => [...prevMessages, res.data]);
         setInputValue("");
       } else {
-        alert("Không thể gửi tin nhắn");
+        alertError(dispatch, "Không thể gửi tin nhắn!")
       }
     });
   };

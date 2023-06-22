@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { HeartRateChart } from "./HeartRateChart";
 import { userRequest } from "../requestMethod";
 import { updateCustomers } from "../redux/CustomerRedux";
+import { alertError, alertSuccess } from "../utils/tools";
 
 export const CustomerPopOver = ({
   isOpenPopOver,
@@ -28,16 +29,21 @@ export const CustomerPopOver = ({
   const dispatch = useDispatch();
   useEffect(() => {
     setUser(selectedUser);
-  }, [selectedUser])
-  const {name, address, phone, img,age, heart_rate, last_update} = user;
+  }, [selectedUser]);
+  const { name, address, phone, img, age, heart_rate, last_update } = user;
 
   const handleSubmit = async () => {
-    await userRequest.put(`/customers/${user._id}`, user).then(res =>{
-      console.log(res);
-      if(res && 199 < res.status < 300) dispatch(updateCustomers([res.data])); 
+    await userRequest.put(`/customers/${user._id}`, user).then((res) => {
+      if (res && 199 < res.status < 300) {
+        dispatch(updateCustomers([res.data]));
+        alertSuccess(dispatch, "Cập nhật thành công!")
+      }
+      else {
+        alertError(dispatch, "Thất bại")
+      }
       setIsOpenPopOver(null);
     });
-  }
+  };
   return (
     <Popover
       onClose={() => {
@@ -95,15 +101,21 @@ export const CustomerPopOver = ({
                 <Grid item>
                   <Avatar alt={name} src={img} />
                 </Grid>
-                <Grid item width={400} style={{whiteSpace: "nowrap", overflow: "hidden"}}>
+                <Grid
+                  item
+                  width={400}
+                  style={{ whiteSpace: "nowrap", overflow: "hidden" }}
+                >
                   <Typography variant="h6">{name}</Typography>
                   <Typography variant="body1">Địa chỉ: {address}</Typography>
-                  <Typography variant="body1">Số điện thoại: {phone}</Typography>
+                  <Typography variant="body1">
+                    Số điện thoại: {phone}
+                  </Typography>
                   <Typography variant="body1">Tuổi: {age}</Typography>
                   <Typography variant="body1">
                     Nhịp tim: {heart_rate || "Chưa có dữ liệu"}
                   </Typography>
-                  <Typography variant="body1" style={{whiteSpace: "normal"}}>
+                  <Typography variant="body1" style={{ whiteSpace: "normal" }}>
                     Lần cập nhật cuối: {last_update || "Chưa có dữ liệu"}
                   </Typography>
                 </Grid>
@@ -144,7 +156,7 @@ export const CustomerPopOver = ({
           <Button
             sx={{ width: "100px" }}
             onClick={() => {
-              handleSubmit()
+              handleSubmit();
             }}
             color="primary"
             variant="contained"

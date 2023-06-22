@@ -24,6 +24,7 @@ import { getCustomersSuccess } from "../redux/CustomerRedux.js";
 import { getEmployeesSuccess } from "../redux/EmployeesRedux.js";
 import { Menu, MenuItem } from "@mui/material";
 import io from "socket.io-client";
+import { addNotification } from "../redux/ChatNotificationRedux.js";
 
 const breadCrumbMap = {
   "/statistic": "Thống kê",
@@ -89,8 +90,8 @@ export const NavBar = ({
   quantity,
   isOpen,
   setIsOpenSideBar,
-  selectedUser,
-  setSelectedUser,
+  userChat,
+  setUserChat,
 }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -111,15 +112,30 @@ export const NavBar = ({
   useEffect(() => {
     if (!socket) return;
     // Lắng nghe sự kiện 'message' từ server và thêm vào hàng đợi thông báo
-    
-
-    return () => {
-      socket.off("message");
-    };
+    socket.on("receive_message", (data) => {
+      const { message, user } = data;
+      console.log(data);
+      console.log(checkPushNotification(message));
+      if (!checkPushNotification(message)) return;
+      dispatch(addNotification(user));
+    });
   }, [socket]);
 
+  const checkPushNotification = (message) => {
+    const { hospitalId, sender, customerId } = message;
+    console.log(user);
+    console.log(userChat);
+    if (
+      hospitalId == user.currentUser.hospitalId &&
+      sender == "user" &&
+      customerId != userChat?._id
+    )
+      return true;
+    return false;
+  };
+
   const handleViewChat = (user) => {
-    setSelectedUser(user);
+    setUserChat(user);
   };
   return (
     <AppBar position="static">
@@ -166,7 +182,7 @@ export const NavBar = ({
           </span>
           <Badge
             onClick={() => setIsOpenNotification(true)}
-            badgeContent={quantity}
+            badgeContent={notifications.length ? notifications.length : null}
             color="primary"
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           >

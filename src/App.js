@@ -16,11 +16,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { Employees } from "./pages/Employees";
 import { useSelector } from "react-redux";
-import { CustomerPopOver } from "./components/CustomerPopOver";
+import Chat from "./components/Chat";
+import Alert from "./components/Alert";
 function App() {
   const [isWindow, setIsWindow] = useState(window.innerWidth > 1212);
   const [isOpenSideBar, setIsOpenSideBar] = useState(isWindow);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [userChat, setUserChat] = useState(null);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -33,7 +34,7 @@ function App() {
     });
   }, []);
   const currentuser = useSelector((state) => state.user.currentUser);
-
+  const hospital = useSelector((state) => state.hospital.hospital);
   return (
     <div className="App">
       <BrowserRouter>
@@ -42,8 +43,8 @@ function App() {
             <SideBar isOpen={isOpenSideBar} />
             <div className="page">
               <NavBar
-                selectedUser={selectedUser}
-                setSelectedUser={setSelectedUser}
+                userChat={userChat}
+                setUserChat={setUserChat}
                 quantity={1}
                 isOpen={isOpenSideBar}
                 setIsOpenSideBar={setIsOpenSideBar}
@@ -53,10 +54,7 @@ function App() {
                 <Route
                   path="/customers"
                   element={
-                    <Customers
-                      selectedUser={selectedUser}
-                      setSelectedUser={setSelectedUser}
-                    />
+                    <Customers userChat={userChat} setUserChat={setUserChat} />
                   }
                 />
                 <Route path="/employees" element={<Employees />} />
@@ -64,6 +62,7 @@ function App() {
                 <Route path="/register" element={<Navigate to="/" />} />
               </Routes>
             </div>
+            <Alert/>
           </>
         ) : (
           <Routes>
@@ -75,11 +74,12 @@ function App() {
             <Route path="/customers" element={<Navigate to="/login" />} />
           </Routes>
         )}
-        {selectedUser && (
-          <CustomerPopOver
-            selectedUser={selectedUser}
-            isOpenPopOver={selectedUser}
-            setIsOpenPopOver={setSelectedUser}
+        {userChat && (
+          <Chat
+            hospital={hospital}
+            user={userChat}
+            visible={userChat}
+            onClose={() => setUserChat(null)}
           />
         )}
       </BrowserRouter>

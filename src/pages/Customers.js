@@ -11,32 +11,30 @@ import ChatIcon from "@mui/icons-material/Chat";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { CustomerPopOver } from "../components/CustomerPopOver";
-import { getCustomers, getCustomersWithHeartRate } from "../redux/apiCalls";
+import { deleteCustomerFromHospital, getCustomers, getCustomersWithHeartRate } from "../redux/apiCalls";
 import { Pagination } from "@mui/material";
-import Chat from "../components/Chat";
 import { AddNewPopOver } from "../components/AddNewPopover";
 
 export const Customers = (props) => {
-  const {selectedUser, setSelectedUser} = props;
-  const [isOpenPopOver, setIsOpenPopOver] = useState(false);
+  const { setUserChat } = props;
   const [isOpenAddNew, setIsOpenAddNew] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [page, setPage] = useState(0);
-  const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const pageSize = 4;
   const startRow = page * pageSize;
   const endRow = startRow + pageSize;
-  const hospital = useSelector((state) => state.hospital.hospital)
+  const hospital = useSelector((state) => state.hospital.hospital);
   const customers = useSelector((state) => state.customers);
   const pageCustomers = customers.slice(startRow, endRow);
   useEffect(() => {
-    if(!hospital) return;
+    if (!hospital) return;
     getCustomers(hospital._id, dispatch);
   }, []);
 
   useEffect(() => {
     getCustomersWithHeartRate(pageCustomers, dispatch);
-  }, [page])
+  }, [page]);
   const windowColumns = [
     { field: "_id", headerName: "ID", width: 220 },
     {
@@ -76,7 +74,11 @@ export const Customers = (props) => {
       headerName: "Nhịp tim",
       width: 200,
       renderCell: (params) => {
-        return <div className="productListItem">{params.row.heart_rate || "Chưa có dữ liệu"}</div>;
+        return (
+          <div className="productListItem">
+            {params.row.heart_rate || "Chưa có dữ liệu"}
+          </div>
+        );
       },
     },
     {
@@ -84,7 +86,11 @@ export const Customers = (props) => {
       headerName: "Lần cập nhật cuối",
       width: 200,
       renderCell: (params) => {
-        return <div className="productListItem">{params.row.last_update || "Chưa có dữ liệu"}</div>;
+        return (
+          <div className="productListItem">
+            {params.row.last_update || "Chưa có dữ liệu"}
+          </div>
+        );
       },
     },
     {
@@ -105,10 +111,7 @@ export const Customers = (props) => {
             <button
               className="edit"
               onClick={() => {
-                setTimeout(()=>{
-                  setIsOpenPopOver(true);
-                })
-                setSelectedUser(params.row)
+                setSelectedUser(params.row);
               }}
             >
               Xem chi tiết
@@ -129,20 +132,26 @@ export const Customers = (props) => {
       headerName: "Chat",
       width: 100,
       renderCell: (params) => {
-        return <ChatIcon color="primary" onClick={() => setVisible(params.row)} style={{ marginLeft: 10 }} />;
+        return (
+          <ChatIcon
+            color="primary"
+            onClick={() => setUserChat(params.row)}
+            style={{ marginLeft: 10 }}
+          />
+        );
       },
     },
   ];
 
   const handleDelete = (id) => {
-    // deleteBin(id, dispatch);
-    alert("Xóa thành công!");
+    deleteCustomerFromHospital(dispatch, id);
   };
+
   return (
     <Box className="status">
       <DataGrid
         rows={pageCustomers}
-        disableSelectionOnClick
+        disableSelectionOnClick 
         columns={windowColumns}
         getRowId={(row) => row._id}
         pageSize={pageSize}
@@ -150,7 +159,7 @@ export const Customers = (props) => {
         checkboxSelection
       />
       <Pagination
-        style={{position: "absolute", right: 10, bottom: 10}}
+        style={{ position: "absolute", right: 10, bottom: 10 }}
         count={Math.ceil(customers.length / pageSize)}
         page={page + 1}
         onChange={(event, value) => setPage(value - 1)}
@@ -164,13 +173,21 @@ export const Customers = (props) => {
       >
         Thêm bệnh nhân
       </Button>
-      {selectedUser && <CustomerPopOver
-        selectedUser = {selectedUser}
-        isOpenPopOver={selectedUser}
-        setIsOpenPopOver={setIsOpenPopOver}
-      />}
-      {isOpenAddNew && <AddNewPopOver isOpenPopOver={isOpenAddNew} setIsOpenPopOver={(value) => setIsOpenAddNew(value)} hospital={hospital} type="customer"/>}
-      {visible && <Chat hospital={hospital} user={visible} visible = {visible} onClose = {() => setVisible(false)}/>}
+      {selectedUser && (
+        <CustomerPopOver
+          selectedUser={selectedUser}
+          isOpenPopOver={selectedUser}
+          setIsOpenPopOver={setSelectedUser}
+        />
+      )}
+      {isOpenAddNew && (
+        <AddNewPopOver
+          isOpenPopOver={isOpenAddNew}
+          setIsOpenPopOver={(value) => setIsOpenAddNew(value)}
+          hospital={hospital}
+          type="customer"
+        />
+      )}
     </Box>
   );
 };

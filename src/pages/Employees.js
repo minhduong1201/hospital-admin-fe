@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getEmployees } from "../redux/apiCalls";
+import { deleteEmployeeFromHospital, getEmployees } from "../redux/apiCalls";
 import { AddNewPopOver } from "../components/AddNewPopover";
 
 export const Employees = () => {
@@ -82,7 +82,7 @@ export const Employees = () => {
   ];
 
   const handleDelete = (id) => {
-    alert("Xóa thành công!");
+    deleteEmployeeFromHospital(dispatch, id);
   };
 
   return (

@@ -7,6 +7,7 @@ import { Button, TextField } from "@mui/material";
 import { userRequest } from "../requestMethod";
 import { postHospitalSuccess } from "../redux/hospitalRedux";
 import { loginSuccess } from "../redux/EmployeeRedux";
+import { alertSuccess } from "../utils/tools";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -51,8 +52,7 @@ const Home = () => {
       await userRequest
         .post(`/hospital`, { name, infor: info, address })
         .then((res) => {
-          // message.success("Tạo thành công");
-          alert("Tạo thành công");
+          alertSuccess(dispatch, "Tạo thành công");
           dispatch(postHospitalSuccess(res.data));
           console.log(res.data);
           updateCurrentUser(
