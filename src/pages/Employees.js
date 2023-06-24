@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteEmployeeFromHospital, getEmployees } from "../redux/apiCalls";
 import { AddNewPopOver } from "../components/AddNewPopover";
+import { Avatar } from "@mui/material";
 
 export const Employees = () => {
   const [isOpenPopOver, setIsOpenPopOver] = useState(false);
@@ -20,7 +21,6 @@ export const Employees = () => {
   }, []);
 
   const windowColumns = [
-    { field: "_id", headerName: "ID", width: 220 },
     {
       field: "name",
       headerName: "Tên",
@@ -30,11 +30,26 @@ export const Employees = () => {
       },
     },
     {
-      field: "email",
-      headerName: "Email",
-      width: 200,
+      field: "img",
+      headerName: "Ảnh",
+      width: 100,
       renderCell: (params) => {
-        return <div className="productListItem">{params.row.email}</div>;
+        return (
+          <div className="productListItem">
+            <Avatar
+              sx={{ width: 32, height: 32 }}
+              src={params.row.img || ""}
+            ></Avatar>
+          </div>
+        );
+      },
+    },
+    {
+      field: "age",
+      headerName: "Tuổi",
+      width: 100,
+      renderCell: (params) => {
+        return <div className="productListItem">{params.row.age}</div>;
       },
     },
     {
@@ -45,12 +60,13 @@ export const Employees = () => {
         return <div className="productListItem">{params.row.phone}</div>;
       },
     },
+
     {
-      field: "age",
-      headerName: "Tuổi",
-      width: 100,
+      field: "email",
+      headerName: "Email",
+      width: 200,
       renderCell: (params) => {
-        return <div className="productListItem">{params.row.age}</div>;
+        return <div className="productListItem">{params.row.email}</div>;
       },
     },
     {
@@ -92,7 +108,7 @@ export const Employees = () => {
         disableSelectionOnClick
         columns={windowColumns}
         getRowId={(row) => row._id}
-        pageSize={8}
+        pageSize={12}
         checkboxSelection
       />
       <Button
@@ -107,8 +123,8 @@ export const Employees = () => {
       <AddNewPopOver
         isOpenPopOver={isOpenPopOver}
         setIsOpenPopOver={(value) => setIsOpenPopOver(value)}
-        hospital = {hospital}
-        type = "employee"
+        hospital={hospital}
+        type="employee"
       />
     </Box>
   );

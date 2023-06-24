@@ -17,7 +17,6 @@ const Alert = () => {
       <MuiAlert
         onClose={handleClose}
         severity={severity}
-        elevation={6}
         variant="filled"
       >
         {message}

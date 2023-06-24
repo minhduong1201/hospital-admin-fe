@@ -12,11 +12,22 @@ const Register = () => {
   const [age, setAge] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [image, setImage] = useState(null);
   const dispatch = useDispatch();
 
   const handleClick = (e) => {
     e.preventDefault();
-    register(dispatch, { username, name, password, role, age, phone, email }, 'employee');
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("role", role);
+    formData.append("age", age);
+    formData.append("phone", phone);
+    formData.append("email", email);
+    formData.append("img", image);
+
+    register(dispatch, formData, 'employee');
   };
 
   return (
@@ -104,7 +115,7 @@ const Register = () => {
               label="Ảnh"
               variant="outlined"
               type="file"
-              // onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setImage(e.target.files?.[0])}
             />
           </Grid>
         </Grid>

@@ -11,8 +11,12 @@ import ChatIcon from "@mui/icons-material/Chat";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { CustomerPopOver } from "../components/CustomerPopOver";
-import { deleteCustomerFromHospital, getCustomers, getCustomersWithHeartRate } from "../redux/apiCalls";
-import { Pagination } from "@mui/material";
+import {
+  deleteCustomerFromHospital,
+  getCustomers,
+  getCustomersWithHeartRate,
+} from "../redux/apiCalls";
+import { Avatar, Pagination } from "@mui/material";
 import { AddNewPopOver } from "../components/AddNewPopover";
 
 export const Customers = (props) => {
@@ -21,7 +25,7 @@ export const Customers = (props) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
-  const pageSize = 4;
+  const pageSize = 12;
   const startRow = page * pageSize;
   const endRow = startRow + pageSize;
   const hospital = useSelector((state) => state.hospital.hospital);
@@ -36,13 +40,35 @@ export const Customers = (props) => {
     getCustomersWithHeartRate(pageCustomers, dispatch);
   }, [page]);
   const windowColumns = [
-    { field: "_id", headerName: "ID", width: 220 },
     {
       field: "name",
       headerName: "Tên",
       width: 200,
       renderCell: (params) => {
         return <div className="productListItem">{params.row.name}</div>;
+      },
+    },
+    {
+      field: "img",
+      headerName: "Ảnh",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <div className="productListItem">
+            <Avatar
+              sx={{ width: 32, height: 32 }}
+              src={params.row.img || ""}
+            ></Avatar>
+          </div>
+        );
+      },
+    },
+    {
+      field: "age",
+      headerName: "Tuổi",
+      width: 100,
+      renderCell: (params) => {
+        return <div className="productListItem">{params.row.age}</div>;
       },
     },
     {
@@ -59,14 +85,6 @@ export const Customers = (props) => {
       width: 150,
       renderCell: (params) => {
         return <div className="productListItem">{params.row.phone}</div>;
-      },
-    },
-    {
-      field: "age",
-      headerName: "Tuổi",
-      width: 100,
-      renderCell: (params) => {
-        return <div className="productListItem">{params.row.age}</div>;
       },
     },
     {
@@ -151,7 +169,7 @@ export const Customers = (props) => {
     <Box className="status">
       <DataGrid
         rows={pageCustomers}
-        disableSelectionOnClick 
+        disableSelectionOnClick
         columns={windowColumns}
         getRowId={(row) => row._id}
         pageSize={pageSize}

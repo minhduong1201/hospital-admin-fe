@@ -20,6 +20,7 @@ export const register = async (dispatch, user, type) => {
 
   try {
     await publicRequest.post(`/auth/register/${type}`, user);
+    console.log("123");
     alertSuccess(dispatch, "Đăng ký thành công!");
   } catch (err) {
     alertError(dispatch, "Tên đăng nhập hoặc mật khẩu người này đã tồn tại!");
@@ -52,7 +53,6 @@ export const getCustomersWithHeartRate = async (customers, dispatch) => {
     customers.map((customer) => userRequest.get(`/heart_rate/${customer._id}`))
   )
     .then((list) => {
-      console.log(list);
       const payload = customers.map((customer, index) => ({
         ...customer,
         heart_rate: list[index].data?.value,
@@ -67,9 +67,6 @@ export const getCustomersWithHeartRate = async (customers, dispatch) => {
 export const getCustomers = async (hospitalId, dispatch) => {
   try {
     const res = await userRequest.get(`/customers/${hospitalId}`);
-    const data = res.data;
-    console.log(data);
-
     dispatch(getCustomersSuccess(res.data));
   } catch (err) {
     console.log("thất bại");

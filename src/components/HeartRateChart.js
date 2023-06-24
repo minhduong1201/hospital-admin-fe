@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { userRequest } from '../requestMethod';
+import { publicRequest, userRequest } from '../requestMethod';
 
 export const HeartRateChart = (props) => {
   const [heartRateData, setHeartRateData] = useState([]);
   const userId = props.user._id;
+  console.log(props.user);
   useEffect(() => {
     // Gửi yêu cầu API sau mỗi giây
     const interval = setInterval(() => {
@@ -37,7 +38,7 @@ export const HeartRateChart = (props) => {
   const fetchHeartRateData = async () => {
     try {
       // Gửi yêu cầu GET tới server để lấy dữ liệu nhịp tim
-      const response = await userRequest.get(`heart_rate/today/${userId}`);
+      const response = await publicRequest.get(`heart_rate/today/${userId}`);
 
       if (response.data) {
         const heartRateData = response.data;

@@ -24,13 +24,14 @@ import { getCustomersSuccess } from "../redux/CustomerRedux.js";
 import { getEmployeesSuccess } from "../redux/EmployeesRedux.js";
 import { Menu, MenuItem } from "@mui/material";
 import io from "socket.io-client";
-import { addNotification } from "../redux/ChatNotificationRedux.js";
+import {
+  addNotification,
+  viewNotification,
+} from "../redux/ChatNotificationRedux.js";
 
 const breadCrumbMap = {
-  "/statistic": "Thống kê",
   "/customers": "Quản lý bệnh nhân",
   "/employees": "Quản lý nhân viên",
-  "/managers": "Người quản lý",
 };
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -114,8 +115,6 @@ export const NavBar = ({
     // Lắng nghe sự kiện 'message' từ server và thêm vào hàng đợi thông báo
     socket.on("receive_message", (data) => {
       const { message, user } = data;
-      console.log(data);
-      console.log(checkPushNotification(message));
       if (!checkPushNotification(message)) return;
       dispatch(addNotification(user));
     });
@@ -123,8 +122,7 @@ export const NavBar = ({
 
   const checkPushNotification = (message) => {
     const { hospitalId, sender, customerId } = message;
-    console.log(user);
-    console.log(userChat);
+
     if (
       hospitalId == user.currentUser.hospitalId &&
       sender == "user" &&
@@ -135,6 +133,7 @@ export const NavBar = ({
   };
 
   const handleViewChat = (user) => {
+    dispatch(viewNotification(user));
     setUserChat(user);
   };
   return (
@@ -189,6 +188,7 @@ export const NavBar = ({
             <NotificationsIcon
               color="primary"
               onClick={() => setIsOpenNotification(true)}
+              id="notification-anchor" // Thêm id "notification-anchor" vào đây
             />
           </Badge>
           <StyledBadge
@@ -196,20 +196,23 @@ export const NavBar = ({
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             variant="dot"
           >
-            <Avatar src={user.currentUser.avatar || ""}></Avatar>
+            <Avatar src={user.currentUser.img || ""}></Avatar>
           </StyledBadge>
         </Box>
         <Menu
           open={isOpenNotification}
           onClose={() => setIsOpenNotification(false)}
           anchorOrigin={{
-            vertical: "top",
+            vertical: "bottom",
             horizontal: "right",
           }}
           transformOrigin={{
             vertical: "top",
             horizontal: "right",
           }}
+          getContentAnchorEl={null} // Thêm dòng này để menu hiển thị dưới nút ấn
+          anchorReference="anchorEl"
+          anchorEl={document.getElementById("notification-anchor")} // Thêm dòng này để chỉ định anchorEl
         >
           {notifications.length ? (
             notifications.map((user) => (

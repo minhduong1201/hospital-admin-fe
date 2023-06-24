@@ -62,7 +62,6 @@ function App() {
                 <Route path="/register" element={<Navigate to="/" />} />
               </Routes>
             </div>
-            <Alert/>
           </>
         ) : (
           <Routes>
@@ -82,6 +81,7 @@ function App() {
             onClose={() => setUserChat(null)}
           />
         )}
+        <Alert />
       </BrowserRouter>
     </div>
   );

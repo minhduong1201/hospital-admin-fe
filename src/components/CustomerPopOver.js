@@ -29,7 +29,7 @@ export const CustomerPopOver = ({
   const dispatch = useDispatch();
   useEffect(() => {
     setUser(selectedUser);
-  }, [selectedUser]);
+  }, [selectedUser]); 
   const { name, address, phone, img, age, heart_rate, last_update } = user;
 
   const handleSubmit = async () => {
@@ -44,6 +44,7 @@ export const CustomerPopOver = ({
       setIsOpenPopOver(null);
     });
   };
+  console.log(selectedUser);
   return (
     <Popover
       onClose={() => {
@@ -85,7 +86,7 @@ export const CustomerPopOver = ({
             ) : (
               <Tab label="Thông tin bệnh nhân" />
             )}
-            {isEmployee ? <></> : <Tab label="Dữ liệu nhịp tim" />}
+            {isEmployee ? <></> : <Tab label="Dữ liệu nhịp tim trong ngày" />}
           </Tabs>
         </Box>
         {tab == 0 && (
