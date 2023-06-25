@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://hospital-backend-production-4a93.up.railway.app/api";
 let user;
 let currentUser;
 if(localStorage.getItem("persist:root")){
@@ -9,7 +9,6 @@ if(localStorage.getItem("persist:root")){
  currentUser = user && JSON.parse(user|| '').currentUser;
 }
 const TOKEN = currentUser?.accessToken|| '';
-console.log(TOKEN);
 export const publicRequest = axios.create({
   baseURL: BASE_URL,
 });
