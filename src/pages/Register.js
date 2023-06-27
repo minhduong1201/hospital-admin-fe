@@ -112,7 +112,6 @@ const Register = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Ảnh"
               variant="outlined"
               type="file"
               onChange={(e) => setImage(e.target.files?.[0])}
