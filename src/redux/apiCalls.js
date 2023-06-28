@@ -32,6 +32,7 @@ export const login = async (dispatch, user, type) => {
   try {
     const res = await publicRequest.post(`/auth/login/${type}`, user);
     dispatch(loginSuccess(res.data));
+    localStorage.setItem("TOKEN_INIT", res.data.accessToken);
     alertSuccess(dispatch, "Đăng nhập thành công!");
   } catch (err) {
     dispatch(loginFailure());

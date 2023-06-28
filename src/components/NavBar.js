@@ -100,7 +100,7 @@ export const NavBar = ({
   const [isOpenNotification, setIsOpenNotification] = useState(false);
   const [socket, setSocket] = useState(null);
   useEffect(() => {
-    const newSocket = io("http://localhost:5000", {
+    const newSocket = io("https://hospital-backend-production-4a93.up.railway.app", {
       transports: ["websocket"],
     });
     setSocket(newSocket);
