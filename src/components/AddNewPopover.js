@@ -4,14 +4,14 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 export const AddNewPopOver = (props) => {
-  const { isOpenPopOver, setIsOpenPopOver, hospital, type } = props;
+  const { isOpenPopOver, setIsOpenPopOver, hospital, type, accessToken } = props;
   const [addId, setAddId] = useState(null);
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     if (!hospital || !addId) return;
     if (type == "employee")
-      addNewEmployee({ hospitalId: hospital._id }, dispatch, addId);
-    else addNewCustomer({ hospitalId: hospital._id }, dispatch, addId);
+      addNewEmployee({ hospitalId: hospital._id }, dispatch, addId, accessToken);
+    else addNewCustomer({ hospitalId: hospital._id }, dispatch, addId, accessToken);
   };
 
   return (

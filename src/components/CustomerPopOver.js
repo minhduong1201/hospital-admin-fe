@@ -12,7 +12,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { HeartRateChart } from "./HeartRateChart";
 import { userRequest } from "../requestMethod";
 import { updateCustomers } from "../redux/CustomerRedux";
@@ -23,6 +23,7 @@ export const CustomerPopOver = ({
   setIsOpenPopOver,
   selectedUser,
   isEmployee,
+  accessToken
 }) => {
   const [tab, setTab] = useState(0);
   const [user, setUser] = useState(selectedUser);
@@ -33,7 +34,7 @@ export const CustomerPopOver = ({
   const { name, address, phone, img, age, heart_rate, last_update } = user;
 
   const handleSubmit = async () => {
-    await userRequest.put(`/customers/${user._id}`, user).then((res) => {
+    await userRequest(accessToken).put(`/customers/${user._id}`, user).then((res) => {
       if (res && 199 < res.status < 300) {
         dispatch(updateCustomers([res.data]));
         alertSuccess(dispatch, "Cập nhật thành công!")
@@ -44,7 +45,7 @@ export const CustomerPopOver = ({
       setIsOpenPopOver(null);
     });
   };
-  console.log(selectedUser);
+
   return (
     <Popover
       onClose={() => {
@@ -135,7 +136,7 @@ export const CustomerPopOver = ({
             </div>
           </FormControl>
         )}
-        {tab == 1 && <HeartRateChart user={selectedUser} />}
+        {tab == 1 && <HeartRateChart accessToken={accessToken} user={selectedUser} />}
         <Box
           sx={{
             marginTop: "20px !important",

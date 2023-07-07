@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { publicRequest, userRequest } from '../requestMethod';
+import { publicRequest } from '../requestMethod';
 
 export const HeartRateChart = (props) => {
   const [heartRateData, setHeartRateData] = useState([]);

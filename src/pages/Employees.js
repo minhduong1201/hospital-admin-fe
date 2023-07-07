@@ -10,14 +10,15 @@ import { deleteEmployeeFromHospital, getEmployees } from "../redux/apiCalls";
 import { AddNewPopOver } from "../components/AddNewPopover";
 import { Avatar } from "@mui/material";
 
-export const Employees = () => {
+export const Employees = (props) => {
+  const {accessToken} = props;
   const [isOpenPopOver, setIsOpenPopOver] = useState(false);
   const dispatch = useDispatch();
   const hospital = useSelector((state) => state.hospital.hospital);
   const employees = useSelector((state) => state.employees);
   useEffect(() => {
     if (!hospital) return;
-    getEmployees(hospital._id, dispatch);
+    getEmployees(hospital._id, dispatch, accessToken);
   }, []);
 
   const windowColumns = [
@@ -98,7 +99,7 @@ export const Employees = () => {
   ];
 
   const handleDelete = (id) => {
-    deleteEmployeeFromHospital(dispatch, id);
+    deleteEmployeeFromHospital(dispatch, id, accessToken);
   };
 
   return (

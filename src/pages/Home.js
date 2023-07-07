@@ -17,11 +17,11 @@ const Home = () => {
   const [info, setInfo] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const accessToken = currentUser?.accessToken;
   useEffect(() => {
     if (currentUser.hospitalId) return;
     const fetchUser = async () => {
-      await userRequest
+      await userRequest(accessToken)
         .get(`/employees/user/${currentUser._id}`)
         .then((res) => {
           if(res.data && res.data[0]) dispatch(loginSuccess(res.data[0]));
@@ -34,7 +34,7 @@ const Home = () => {
     console.log(currentUser);
     if (!currentUser.hospitalId) return;
     const getHospital = async () => {
-      await userRequest
+      await userRequest(accessToken)
         .get(`/hospital/${currentUser.hospitalId}`)
         .then((res) => {
           if(res.data){
@@ -49,7 +49,7 @@ const Home = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       setLoading(true);
-      await userRequest
+      await userRequest(accessToken)
         .post(`/hospital`, { name, infor: info, address })
         .then((res) => {
           alertSuccess(dispatch, "Tạo thành công");
@@ -58,7 +58,8 @@ const Home = () => {
           updateCurrentUser(
             { hospitalId: res.data._id },
             dispatch,
-            currentUser._id
+            currentUser._id,
+            accessToken
           );
           setLoading(false);
         })

@@ -35,14 +35,16 @@ function App() {
   }, []);
   const currentuser = useSelector((state) => state.user.currentUser);
   const hospital = useSelector((state) => state.hospital.hospital);
+  const accessToken = currentuser.accessToken;
   return (
     <div className="App">
       <BrowserRouter>
         {currentuser ? (
           <>
-            <SideBar isOpen={isOpenSideBar} />
+            <SideBar accessToken={accessToken} isOpen={isOpenSideBar} />
             <div className="page">
               <NavBar
+                accessToken={accessToken}
                 userChat={userChat}
                 setUserChat={setUserChat}
                 quantity={1}
@@ -50,14 +52,14 @@ function App() {
                 setIsOpenSideBar={setIsOpenSideBar}
               />
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home accessToken={accessToken}/>} />
                 <Route
                   path="/customers"
                   element={
-                    <Customers userChat={userChat} setUserChat={setUserChat} />
+                    <Customers accessToken={accessToken} userChat={userChat} setUserChat={setUserChat} />
                   }
                 />
-                <Route path="/employees" element={<Employees />} />
+                <Route path="/employees" element={<Employees accessToken={accessToken}/>} />
                 <Route path="/login" element={<Navigate to="/" />} />
                 <Route path="/register" element={<Navigate to="/" />} />
               </Routes>

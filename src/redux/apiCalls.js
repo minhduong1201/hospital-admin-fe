@@ -40,18 +40,18 @@ export const login = async (dispatch, user, type) => {
   }
 };
 
-export const getEmployees = async (hospitalId, dispatch) => {
+export const getEmployees = async (hospitalId, dispatch, accessToken) => {
   try {
-    const res = await userRequest.get(`/employees/${hospitalId}`);
+    const res = await userRequest(accessToken).get(`/employees/${hospitalId}`);
     dispatch(getEmployeesSuccess(res.data));
   } catch (err) {
     console.log(err);
   }
 };
 
-export const getCustomersWithHeartRate = async (customers, dispatch) => {
+export const getCustomersWithHeartRate = async (customers, dispatch, accessToken) => {
   const data = Promise.all(
-    customers.map((customer) => userRequest.get(`/heart_rate/${customer._id}`))
+    customers.map((customer) => userRequest(accessToken).get(`/heart_rate/${customer._id}`))
   )
     .then((list) => {
       const payload = customers.map((customer, index) => ({
@@ -65,33 +65,33 @@ export const getCustomersWithHeartRate = async (customers, dispatch) => {
   return data;
 };
 
-export const getCustomers = async (hospitalId, dispatch) => {
+export const getCustomers = async (hospitalId, dispatch, accessToken) => {
   try {
-    const res = await userRequest.get(`/customers/${hospitalId}`);
+    const res = await userRequest(accessToken).get(`/customers/${hospitalId}`);
     dispatch(getCustomersSuccess(res.data));
   } catch (err) {
     console.log("thất bại");
   }
 };
 
-export const updateCurrentUser = async (employee, dispatch, id) => {
+export const updateCurrentUser = async (employee, dispatch, id, accessToken) => {
   try {
-    const res = await userRequest.put(`/employees/${id}`, employee);
+    const res = await userRequest(accessToken).put(`/employees/${id}`, employee);
     dispatch(loginSuccess(res.data));
   } catch (err) {
     console.log(err);
   }
 };
 
-export const addNewEmployee = async (employee, dispatch, id) => {
+export const addNewEmployee = async (employee, dispatch, id, accessToken) => {
   if (id == undefined || id == null) return;
-  const res = await userRequest.put(`/employees/${id}`, employee);
+  const res = await userRequest(accessToken).put(`/employees/${id}`, employee);
   if (res.data && 199 < res.status < 300) dispatch(addEmployee(res.data));
 };
 
-export const addNewCustomer = async (employee, dispatch, id) => {
+export const addNewCustomer = async (employee, dispatch, id, accessToken) => {
   if (id == undefined || id == null) return;
-  const res = await userRequest.put(`/customers/${id}`, employee);
+  const res = await userRequest(accessToken).put(`/customers/${id}`, employee);
   if (res.data && 199 < res.status < 300) {
     dispatch(addCustomer(res.data));
     alertSuccess(dispatch, "Thêm bệnh nhân thành công!");
@@ -100,9 +100,9 @@ export const addNewCustomer = async (employee, dispatch, id) => {
   }
 };
 
-export const deleteCustomerFromHospital = async (dispatch, id) => {
+export const deleteCustomerFromHospital = async (dispatch, id, accessToken) => {
   if (id == undefined || id == null) return;
-  const res = await userRequest.put(`/customers/${id}`, { hospitalId: null });
+  const res = await userRequest(accessToken).put(`/customers/${id}`, { hospitalId: null });
   if (res.data && 199 < res.status < 300) {
     dispatch(deleteCustomer(res.data));
     alertSuccess(dispatch, "Xóa bệnh nhân thành công!");
@@ -111,9 +111,9 @@ export const deleteCustomerFromHospital = async (dispatch, id) => {
   }
 };
 
-export const deleteEmployeeFromHospital = async (dispatch, id) => {
+export const deleteEmployeeFromHospital = async (dispatch, id, accessToken) => {
   if (id == undefined || id == null) return;
-  const res = await userRequest.put(`/employees/${id}`, { hospitalId: null });
+  const res = await userRequest(accessToken).put(`/employees/${id}`, { hospitalId: null });
   if (res.data && 199 < res.status < 300) {
     dispatch(deleteEmployee(res.data));
     alertSuccess(dispatch, "Xóa nhân viên thành công!");

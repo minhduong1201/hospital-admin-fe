@@ -19,7 +19,7 @@ import { addNotification } from "../redux/ChatNotificationRedux";
 import { alertError } from "../utils/tools";
 
 const ChatPopover = (props) => {
-  const { visible, onClose, hospital, user } = props;
+  const { visible, onClose, hospital, user, accessToken } = props;
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -32,7 +32,7 @@ const ChatPopover = (props) => {
 
   useEffect(() => {
     const getMessages = async () => {
-      const res = await userRequest.get(
+      const res = await userRequest(accessToken).get(
         `/message?hospitalId=${hospital._id}&customerId=${user._id}`
       );
       if (res.data) setMessages(res.data);
@@ -94,7 +94,7 @@ const ChatPopover = (props) => {
       message: inputValue,
     };
 
-    await userRequest.post(`/message`, newMessage).then((res) => {
+    await userRequest(accessToken).post(`/message`, newMessage).then((res) => {
       if (200 <= res.status < 300) {
         socket.emit("message", {message: res.data});
         setMessages((prevMessages) => [...prevMessages, res.data]);

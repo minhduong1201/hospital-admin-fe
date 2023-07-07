@@ -20,7 +20,7 @@ import { Avatar, Pagination } from "@mui/material";
 import { AddNewPopOver } from "../components/AddNewPopover";
 
 export const Customers = (props) => {
-  const { setUserChat } = props;
+  const { setUserChat, accessToken } = props;
   const [isOpenAddNew, setIsOpenAddNew] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [page, setPage] = useState(0);
@@ -33,11 +33,11 @@ export const Customers = (props) => {
   const pageCustomers = customers.slice(startRow, endRow);
   useEffect(() => {
     if (!hospital) return;
-    getCustomers(hospital._id, dispatch);
+    getCustomers(hospital._id, dispatch, accessToken);
   }, []);
 
   useEffect(() => {
-    getCustomersWithHeartRate(pageCustomers, dispatch);
+    getCustomersWithHeartRate(pageCustomers, dispatch, accessToken);
   }, [page]);
   const windowColumns = [
     {
@@ -162,7 +162,7 @@ export const Customers = (props) => {
   ];
 
   const handleDelete = (id) => {
-    deleteCustomerFromHospital(dispatch, id);
+    deleteCustomerFromHospital(dispatch, id, accessToken);
   };
 
   return (
@@ -193,6 +193,7 @@ export const Customers = (props) => {
       </Button>
       {selectedUser && (
         <CustomerPopOver
+          accessToken={accessToken}
           selectedUser={selectedUser}
           isOpenPopOver={selectedUser}
           setIsOpenPopOver={setSelectedUser}
@@ -200,6 +201,7 @@ export const Customers = (props) => {
       )}
       {isOpenAddNew && (
         <AddNewPopOver
+          accessToken={accessToken}
           isOpenPopOver={isOpenAddNew}
           setIsOpenPopOver={(value) => setIsOpenAddNew(value)}
           hospital={hospital}
