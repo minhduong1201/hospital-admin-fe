@@ -25,12 +25,13 @@ export const Customers = (props) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
-  const pageSize = 12;
+  const pageSize = 11;
   const startRow = page * pageSize;
   const endRow = startRow + pageSize;
   const hospital = useSelector((state) => state.hospital.hospital);
   const customers = useSelector((state) => state.customers);
   const pageCustomers = customers.slice(startRow, endRow);
+
   useEffect(() => {
     if (!hospital) return;
     getCustomers(hospital._id, dispatch, accessToken);
@@ -39,6 +40,7 @@ export const Customers = (props) => {
   useEffect(() => {
     getCustomersWithHeartRate(pageCustomers, dispatch, accessToken);
   }, [page]);
+
   const windowColumns = [
     {
       field: "name",
@@ -71,14 +73,14 @@ export const Customers = (props) => {
         return <div className="productListItem">{params.row.age}</div>;
       },
     },
-    {
-      field: "address",
-      headerName: "Địa chỉ",
-      width: 300,
-      renderCell: (params) => {
-        return <div className="productListItem">{params.row.address}</div>;
-      },
-    },
+    // {
+    //   field: "address",
+    //   headerName: "Địa chỉ",
+    //   width: 300,
+    //   renderCell: (params) => {
+    //     return <div className="productListItem">{params.row.address}</div>;
+    //   },
+    // },
     {
       field: "phone",
       headerName: "Số điện thoại",
@@ -90,7 +92,7 @@ export const Customers = (props) => {
     {
       field: "heart_rate",
       headerName: "Nhịp tim",
-      width: 200,
+      width: 120,
       renderCell: (params) => {
         return (
           <div className="productListItem">
@@ -99,18 +101,18 @@ export const Customers = (props) => {
         );
       },
     },
-    {
-      field: "last_update",
-      headerName: "Lần cập nhật cuối",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="productListItem">
-            {params.row.last_update || "Chưa có dữ liệu"}
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "last_update",
+    //   headerName: "Lần cập nhật cuối",
+    //   width: 200,
+    //   renderCell: (params) => {
+    //     return (
+    //       <div className="productListItem">
+    //         {params.row.last_update || "Chưa có dữ liệu"}
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       field: "health",
       headerName: "Tình trạng sức khỏe",
@@ -122,7 +124,7 @@ export const Customers = (props) => {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 200,
+      width: 170,
       renderCell: (params) => {
         return (
           <>
@@ -184,12 +186,18 @@ export const Customers = (props) => {
       />
       <Button
         variant="contained"
-        sx={{ position: "absolute", bottom: "130px", right: "100px" }}
+        sx={{ position: "absolute", bottom: "70px", left: "300px" }}
         onClick={() => {
           setIsOpenAddNew(true);
         }}
       >
         Thêm bệnh nhân
+      </Button>
+      <Button
+        color="secondary"
+        sx={{ position: "absolute", bottom: "70px", right: "50px" }}
+      >
+        Tổng số bệnh nhân: {customers.length}
       </Button>
       {selectedUser && (
         <CustomerPopOver

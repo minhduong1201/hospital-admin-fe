@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link  } from 'react-router-dom';
-import { register } from '../redux/apiCalls';
-import { Button, TextField, Typography, Container, Grid, Box, Input, InputLabel } from '@mui/material';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { register } from "../redux/apiCalls";
+import {
+  Button,
+  TextField,
+  Typography,
+  Container,
+  Grid,
+  Box,
+  Input,
+  InputLabel,
+} from "@mui/material";
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
-  const [age, setAge] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [age, setAge] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
 
@@ -27,18 +36,18 @@ const Register = () => {
     formData.append("email", email);
     formData.append("img", image);
 
-    register(dispatch, formData, 'employee');
+    register(dispatch, formData, "employee");
   };
 
   return (
     <Container maxWidth="xs">
       <Box
         sx={{
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Typography variant="h4" align="center" gutterBottom>
@@ -83,12 +92,12 @@ const Register = () => {
             />
           </Grid>
           <Grid item xs={12}>
-          <InputLabel htmlFor="age-input">Tuổi</InputLabel>
+            <InputLabel htmlFor="age-input">Tuổi</InputLabel>
             <Input
-            id="age-input"
-            name="age"
-            type="number"
-            onChange={(e) => setAge(e.target.value)}
+              id="age-input"
+              name="age"
+              type="number"
+              onChange={(e) => setAge(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -110,22 +119,23 @@ const Register = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
+            <span>Chọn ảnh đại diện</span>
+            <input
               type="file"
               onChange={(e) => setImage(e.target.files?.[0])}
-            />
+            ></input>
           </Grid>
         </Grid>
-        <Button onClick={handleClick} variant="contained" color="primary" sx={{ mt: 2, width: '100%' }}>
+        <Button
+          onClick={handleClick}
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2, width: "100%" }}
+        >
           Đăng ký
         </Button>
         <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-          Đã có tài khoản?{' '}
-          <Link to="/login">
-            Đăng nhập
-          </Link>
+          Đã có tài khoản? <Link to="/login">Đăng nhập</Link>
         </Typography>
       </Box>
     </Container>

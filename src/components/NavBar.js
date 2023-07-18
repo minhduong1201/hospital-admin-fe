@@ -112,7 +112,6 @@ export const NavBar = ({
 
   useEffect(() => {
     if (!socket) return;
-    // Lắng nghe sự kiện 'message' từ server và thêm vào hàng đợi thông báo
     socket.on("receive_message", (data) => {
       const { message, user } = data;
       if (!checkPushNotification(message)) return;
@@ -123,6 +122,8 @@ export const NavBar = ({
   const checkPushNotification = (message) => {
     const { hospitalId, sender, customerId } = message;
 
+    console.log(userChat);
+    console.log(customerId);
     if (
       hospitalId == user.currentUser.hospitalId &&
       sender == "user" &&

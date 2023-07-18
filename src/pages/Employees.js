@@ -109,17 +109,25 @@ export const Employees = (props) => {
         disableSelectionOnClick
         columns={windowColumns}
         getRowId={(row) => row._id}
-        pageSize={12}
+        pageSize={11}
         checkboxSelection
       />
       <Button
         variant="contained"
-        sx={{ position: "absolute", bottom: "130px", right: "100px" }}
+        // color="info"
+        sx={{ position: "absolute", bottom: "70px", left: "300px" }}
         onClick={() => {
           setIsOpenPopOver(true);
         }}
       >
         Thêm nhân viên
+      </Button>
+      <Button
+        // variant="contained"
+        color="secondary"
+        sx={{ position: "absolute", bottom: "70px", right: "50px" }}
+      >
+        Tổng số nhân viên: {employees.length}
       </Button>
       <AddNewPopOver
         isOpenPopOver={isOpenPopOver}

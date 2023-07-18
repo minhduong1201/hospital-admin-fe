@@ -35,7 +35,7 @@ function App() {
   }, []);
   const currentuser = useSelector((state) => state.user.currentUser);
   const hospital = useSelector((state) => state.hospital.hospital);
-  const accessToken = currentuser.accessToken;
+  const accessToken = currentuser?.accessToken;
   return (
     <div className="App">
       <BrowserRouter>
