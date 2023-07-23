@@ -39,7 +39,7 @@ const ChatPopover = (props) => {
     };
     getMessages();
 
-    const newSocket = io("https://hospital-backend-production-4a93.up.railway.app", {
+    const newSocket = io("https://hospital-backend-production-d055.up.railway.app", {
       transports: ["websocket"],
     });
     setSocket(newSocket);

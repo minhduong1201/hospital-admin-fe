@@ -9,6 +9,7 @@ export const AddNewPopOver = (props) => {
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     if (!hospital || !addId) return;
+    console.log(accessToken);
     if (type == "employee")
       addNewEmployee({ hospitalId: hospital._id }, dispatch, addId, accessToken);
     else addNewCustomer({ hospitalId: hospital._id }, dispatch, addId, accessToken);

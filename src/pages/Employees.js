@@ -103,7 +103,7 @@ export const Employees = (props) => {
   };
 
   return (
-    <Box className="status">
+    <Box className="status" style={{position: "relative"}}>
       <DataGrid
         rows={employees}
         disableSelectionOnClick
@@ -113,9 +113,8 @@ export const Employees = (props) => {
         checkboxSelection
       />
       <Button
-        variant="contained"
-        // color="info"
-        sx={{ position: "absolute", bottom: "70px", left: "300px" }}
+      variant="contained"
+        sx={{ position: "absolute", bottom: "70px", left: "20px" }}
         onClick={() => {
           setIsOpenPopOver(true);
         }}
@@ -123,13 +122,13 @@ export const Employees = (props) => {
         Thêm nhân viên
       </Button>
       <Button
-        // variant="contained"
         color="secondary"
         sx={{ position: "absolute", bottom: "70px", right: "50px" }}
       >
         Tổng số nhân viên: {employees.length}
       </Button>
       <AddNewPopOver
+        accessToken={accessToken}
         isOpenPopOver={isOpenPopOver}
         setIsOpenPopOver={(value) => setIsOpenPopOver(value)}
         hospital={hospital}

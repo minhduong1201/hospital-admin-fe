@@ -7,7 +7,7 @@ import { Button, TextField } from "@mui/material";
 import { userRequest } from "../requestMethod";
 import { postHospitalSuccess } from "../redux/hospitalRedux";
 import { loginSuccess } from "../redux/EmployeeRedux";
-import { alertSuccess } from "../utils/tools";
+import { alertError, alertSuccess } from "../utils/tools";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,6 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    console.log(currentUser);
     if (!currentUser.hospitalId) return;
     const getHospital = async () => {
       await userRequest(accessToken)
@@ -64,11 +63,9 @@ const Home = () => {
           setLoading(false);
         })
         .catch((err) => {
-          //  message.error("tạo thất bại")
+          alertError(dispatch, err?.response?.data);
           setLoading(false);
         });
-      // Xử lý logic khi nhấn nút Submit
-      // Gửi dữ liệu tới backend hoặc thực hiện các tác vụ khác tại đây
     };
 
     return (

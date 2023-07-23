@@ -97,10 +97,11 @@ export const NavBar = ({
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const notifications = useSelector((state) => state.notifications);
+  const hospital = useSelector((state) => state.hospital?.hospital);
   const [isOpenNotification, setIsOpenNotification] = useState(false);
   const [socket, setSocket] = useState(null);
   useEffect(() => {
-    const newSocket = io("https://hospital-backend-production-4a93.up.railway.app", {
+    const newSocket = io("https://hospital-backend-production-d055.up.railway.app", {
       transports: ["websocket"],
     });
     setSocket(newSocket);
@@ -114,7 +115,7 @@ export const NavBar = ({
     if (!socket) return;
     socket.on("receive_message", (data) => {
       const { message, user } = data;
-      if (!checkPushNotification(message)) return;
+      if (message && !checkPushNotification(message)) return;
       dispatch(addNotification(user));
     });
   }, [socket]);
@@ -122,8 +123,6 @@ export const NavBar = ({
   const checkPushNotification = (message) => {
     const { hospitalId, sender, customerId } = message;
 
-    console.log(userChat);
-    console.log(customerId);
     if (
       hospitalId == user.currentUser.hospitalId &&
       sender == "user" &&
@@ -211,9 +210,9 @@ export const NavBar = ({
             vertical: "top",
             horizontal: "right",
           }}
-          getContentAnchorEl={null} // Thêm dòng này để menu hiển thị dưới nút ấn
+          getContentAnchorEl={null} 
           anchorReference="anchorEl"
-          anchorEl={document.getElementById("notification-anchor")} // Thêm dòng này để chỉ định anchorEl
+          anchorEl={document.getElementById("notification-anchor")} 
         >
           {notifications.length ? (
             notifications.map((user) => (

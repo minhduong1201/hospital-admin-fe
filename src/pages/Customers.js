@@ -101,22 +101,22 @@ export const Customers = (props) => {
         );
       },
     },
-    // {
-    //   field: "last_update",
-    //   headerName: "Lần cập nhật cuối",
-    //   width: 200,
-    //   renderCell: (params) => {
-    //     return (
-    //       <div className="productListItem">
-    //         {params.row.last_update || "Chưa có dữ liệu"}
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      field: "last_update",
+      headerName: "Lần cập nhật cuối",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <div className="productListItem">
+            {params.row.last_update || "Chưa có dữ liệu"}
+          </div>
+        );
+      },
+    },
     {
       field: "health",
       headerName: "Tình trạng sức khỏe",
-      width: 200,
+      width: 240,
       renderCell: (params) => {
         return <div className="productListItem">{params.row.health}</div>;
       },
@@ -168,7 +168,7 @@ export const Customers = (props) => {
   };
 
   return (
-    <Box className="status">
+    <Box className="status" style={{position: "relative"}}>
       <DataGrid
         rows={pageCustomers}
         disableSelectionOnClick
@@ -186,7 +186,7 @@ export const Customers = (props) => {
       />
       <Button
         variant="contained"
-        sx={{ position: "absolute", bottom: "70px", left: "300px" }}
+        sx={{ position: "absolute", bottom: "70px", left: "20px" }}
         onClick={() => {
           setIsOpenAddNew(true);
         }}
