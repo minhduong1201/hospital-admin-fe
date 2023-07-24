@@ -94,9 +94,10 @@ export const Customers = (props) => {
       headerName: "Nhịp tim",
       width: 120,
       renderCell: (params) => {
+        const value = params.row.heart_rate;
         return (
           <div className="productListItem">
-            {params.row.heart_rate || "Chưa có dữ liệu"}
+            {value == null ? "Chưa có dữ liệu" : value}
           </div>
         );
       },

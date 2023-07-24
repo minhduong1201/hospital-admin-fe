@@ -115,7 +115,7 @@ export const CustomerPopOver = ({
                   </Typography>
                   <Typography variant="body1">Tuổi: {age}</Typography>
                   <Typography variant="body1">
-                    Nhịp tim: {heart_rate || "Chưa có dữ liệu"}
+                    Nhịp tim: {heart_rate == null ? "Chưa có dữ liệu" : heart_rate}
                   </Typography>
                   <Typography variant="body1" style={{ whiteSpace: "normal" }}>
                     Lần cập nhật cuối: {last_update || "Chưa có dữ liệu"}

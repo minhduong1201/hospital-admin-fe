@@ -26,6 +26,7 @@ import { Menu, MenuItem } from "@mui/material";
 import io from "socket.io-client";
 import {
   addNotification,
+  updateNotifications,
   viewNotification,
 } from "../redux/ChatNotificationRedux.js";
 
@@ -175,6 +176,7 @@ export const NavBar = ({
               dispatch(postHospitalSuccess(null));
               dispatch(getCustomersSuccess([]));
               dispatch(getEmployeesSuccess([]));
+              dispatch(updateNotifications([]));
             }}
           >
             Đăng xuất
