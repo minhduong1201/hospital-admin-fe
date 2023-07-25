@@ -8,11 +8,12 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteEmployeeFromHospital, getEmployees } from "../redux/apiCalls";
 import { AddNewPopOver } from "../components/AddNewPopover";
-import { Avatar } from "@mui/material";
+import { Avatar, Popover, Typography } from "@mui/material";
 
 export const Employees = (props) => {
-  const {accessToken} = props;
+  const { accessToken } = props;
   const [isOpenPopOver, setIsOpenPopOver] = useState(false);
+  const [deleteUser, setDeleteUser] = useState(null);
   const dispatch = useDispatch();
   const hospital = useSelector((state) => state.hospital.hospital);
   const employees = useSelector((state) => state.employees);
@@ -89,7 +90,7 @@ export const Employees = (props) => {
               <DeleteIcon
                 color="primary"
                 className=""
-                onClick={() => handleDelete(params.row._id)}
+                onClick={() => setDeleteUser(params.row._id)}
               />
             </IconButton>
           </>
@@ -98,12 +99,42 @@ export const Employees = (props) => {
     },
   ];
 
-  const handleDelete = (id) => {
-    deleteEmployeeFromHospital(dispatch, id, accessToken);
+  const renderDeletePopOver = () => {
+    return (
+      <Popover
+        id={"popover-delete"}
+        open={deleteUser}
+        onClose={() => setDeleteUser(null)}
+        anchorPosition={{ top: 400 }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Box sx={{ p: 2, textAlign: "center" }}>
+          <Typography>Xóa người dùng ra khỏi bệnh viện?</Typography>
+          <Button onClick={handleDelete} variant="contained" sx={{ mr: 1 }}>
+            OK
+          </Button>
+          <Button onClick={() => setDeleteUser(null)} variant="outlined">
+            Hủy
+          </Button>
+        </Box>
+      </Popover>
+    );
+  };
+  const handleDelete = () => {
+    deleteEmployeeFromHospital(dispatch, deleteUser, accessToken).then((res) =>
+      setDeleteUser(null)
+    );
   };
 
   return (
-    <Box className="status" style={{position: "relative"}}>
+    <Box className="status" style={{ position: "relative" }}>
       <DataGrid
         rows={employees}
         disableSelectionOnClick
@@ -113,7 +144,7 @@ export const Employees = (props) => {
         checkboxSelection
       />
       <Button
-      variant="contained"
+        variant="contained"
         sx={{ position: "absolute", bottom: "70px", left: "20px" }}
         onClick={() => {
           setIsOpenPopOver(true);
@@ -134,6 +165,7 @@ export const Employees = (props) => {
         hospital={hospital}
         type="employee"
       />
+      {deleteUser && renderDeletePopOver()}
     </Box>
   );
 };

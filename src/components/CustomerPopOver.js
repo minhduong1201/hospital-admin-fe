@@ -23,38 +23,40 @@ export const CustomerPopOver = ({
   setIsOpenPopOver,
   selectedUser,
   isEmployee,
-  accessToken
+  accessToken,
 }) => {
   const [tab, setTab] = useState(0);
   const [user, setUser] = useState(selectedUser);
   const dispatch = useDispatch();
   useEffect(() => {
     setUser(selectedUser);
-  }, [selectedUser]); 
+  }, [selectedUser]);
   const { name, address, phone, img, age, heart_rate, last_update } = user;
 
   const handleSubmit = async () => {
-    await userRequest(accessToken).put(`/customers/${user._id}`, user).then((res) => {
-      if (res && 199 < res.status < 300) {
-        dispatch(updateCustomers([res.data]));
-        alertSuccess(dispatch, "Cập nhật thành công!")
-      }
-      else {
-        alertError(dispatch, "Thất bại")
-      }
-      setIsOpenPopOver(null);
-    });
+    await userRequest(accessToken)
+      .put(`/customers/${user._id}`, user)
+      .then((res) => {
+        if (res && 199 < res.status < 300) {
+          dispatch(updateCustomers([res.data]));
+          alertSuccess(dispatch, "Cập nhật thành công!");
+        } else {
+          alertError(dispatch, "Thất bại");
+        }
+        setIsOpenPopOver(null);
+      });
   };
 
   return (
     <Popover
+      id="popover-infor"
       onClose={() => {
         setIsOpenPopOver(null);
       }}
       width={1000}
       open={isOpenPopOver}
       anchorReference="anchorPosition"
-      anchorPosition={{ top: 50, left: 450 }}
+      anchorPosition={{ top: 50, left: 200 }}
       anchorOrigin={{
         vertical: "top",
         horizontal: "left",
@@ -115,7 +117,8 @@ export const CustomerPopOver = ({
                   </Typography>
                   <Typography variant="body1">Tuổi: {age}</Typography>
                   <Typography variant="body1">
-                    Nhịp tim: {heart_rate == null ? "Chưa có dữ liệu" : heart_rate}
+                    Nhịp tim:{" "}
+                    {heart_rate == null ? "Chưa có dữ liệu" : heart_rate}
                   </Typography>
                   <Typography variant="body1" style={{ whiteSpace: "normal" }}>
                     Lần cập nhật cuối: {last_update || "Chưa có dữ liệu"}
@@ -136,7 +139,9 @@ export const CustomerPopOver = ({
             </div>
           </FormControl>
         )}
-        {tab == 1 && <HeartRateChart accessToken={accessToken} user={selectedUser} />}
+        {tab == 1 && (
+          <HeartRateChart accessToken={accessToken} user={selectedUser} />
+        )}
         <Box
           sx={{
             marginTop: "20px !important",

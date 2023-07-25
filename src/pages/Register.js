@@ -12,6 +12,7 @@ import {
   Input,
   InputLabel,
 } from "@mui/material";
+import { alertError } from "../utils/tools";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -24,8 +25,21 @@ const Register = () => {
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
 
+  const isFormNotValid = () => {
+    let error = null, emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email != "" && !emailPattern.test(email)) error = "Định dạng email không hợp lệ!";
+    if (phone.length < 10) error="Số điện thoại không hợp lệ ( nhỏ hơn 10 chữ số)";
+    if (password.length < 5) error="Mật khẩu phải nhiều hơn 5 ký tự";
+    if (username == "") error="Trường tên đăng nhập không thể để trống!";
+    if (name == "") error="Trường tên không thể để trống!";
+  
+    if(error) alertError(dispatch, error);
+    return error;
+  }
+
   const handleClick = (e) => {
     e.preventDefault();
+    if (isFormNotValid()) return;
     const formData = new FormData();
     formData.append("name", name);
     formData.append("username", username);

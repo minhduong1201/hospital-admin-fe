@@ -22,7 +22,7 @@ export const AddNewPopOver = (props) => {
       }}
       open={isOpenPopOver}
       anchorReference="anchorPosition"
-      anchorPosition={{ top: 50, left: 450 }}
+      anchorPosition={{ top: 50, left: 400 }}
       anchorOrigin={{
         vertical: "top",
         horizontal: "left",

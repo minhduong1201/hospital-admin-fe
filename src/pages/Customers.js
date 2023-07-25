@@ -16,13 +16,14 @@ import {
   getCustomers,
   getCustomersWithHeartRate,
 } from "../redux/apiCalls";
-import { Avatar, Pagination } from "@mui/material";
+import { Avatar, Pagination, Popover, Typography } from "@mui/material";
 import { AddNewPopOver } from "../components/AddNewPopover";
 
 export const Customers = (props) => {
   const { setUserChat, accessToken } = props;
   const [isOpenAddNew, setIsOpenAddNew] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [deleteUser, setDeleteUser] = useState(null);
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
   const pageSize = 11;
@@ -40,6 +41,16 @@ export const Customers = (props) => {
   useEffect(() => {
     getCustomersWithHeartRate(pageCustomers, dispatch, accessToken);
   }, [page]);
+
+  const formatDateTime = (data) => {
+    const date = new Date(data);
+    const hours = String(date.getUTCHours()).padStart(2, "0");
+    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Tháng trong JavaScript bắt đầu từ 0
+
+    return `${hours}:${minutes} ${day}/${month}/${date.getUTCFullYear()}`;
+  };
 
   const windowColumns = [
     {
@@ -73,14 +84,6 @@ export const Customers = (props) => {
         return <div className="productListItem">{params.row.age}</div>;
       },
     },
-    // {
-    //   field: "address",
-    //   headerName: "Địa chỉ",
-    //   width: 300,
-    //   renderCell: (params) => {
-    //     return <div className="productListItem">{params.row.address}</div>;
-    //   },
-    // },
     {
       field: "phone",
       headerName: "Số điện thoại",
@@ -107,9 +110,10 @@ export const Customers = (props) => {
       headerName: "Lần cập nhật cuối",
       width: 200,
       renderCell: (params) => {
+        const { last_update } = params.row;
         return (
           <div className="productListItem">
-            {params.row.last_update || "Chưa có dữ liệu"}
+            {last_update ? formatDateTime(last_update) : "Chưa có dữ liệu"}
           </div>
         );
       },
@@ -141,7 +145,7 @@ export const Customers = (props) => {
               <DeleteIcon
                 color="primary"
                 className=""
-                onClick={() => handleDelete(params.row._id)}
+                onClick={() => setDeleteUser(params.row._id)}
               />
             </IconButton>
           </>
@@ -164,12 +168,42 @@ export const Customers = (props) => {
     },
   ];
 
-  const handleDelete = (id) => {
-    deleteCustomerFromHospital(dispatch, id, accessToken);
+  const renderDeletePopOver = () => {
+    return (
+      <Popover
+        id={"popover-delete"}
+        open={deleteUser}
+        onClose={() => setDeleteUser(null)}
+        anchorPosition={{ top: 400 }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Box sx={{ p: 2, textAlign: "center" }}>
+          <Typography>Xóa người dùng ra khỏi bệnh viện?</Typography>
+          <Button onClick={handleDelete} variant="contained" sx={{ mr: 1 }}>
+            OK
+          </Button>
+          <Button onClick={() => setDeleteUser(null)} variant="outlined">
+            Hủy
+          </Button>
+        </Box>
+      </Popover>
+    );
+  };
+  const handleDelete = () => {
+    deleteCustomerFromHospital(dispatch, deleteUser, accessToken).then((res) =>
+      setDeleteUser(null)
+    );
   };
 
   return (
-    <Box className="status" style={{position: "relative"}}>
+    <Box className="status" style={{ position: "relative" }}>
       <DataGrid
         rows={pageCustomers}
         disableSelectionOnClick
@@ -217,6 +251,7 @@ export const Customers = (props) => {
           type="customer"
         />
       )}
+      {deleteUser && renderDeletePopOver()}
     </Box>
   );
 };
