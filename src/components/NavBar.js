@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import {
@@ -101,6 +101,14 @@ export const NavBar = ({
   const hospital = useSelector((state) => state.hospital?.hospital);
   const [isOpenNotification, setIsOpenNotification] = useState(false);
   const [socket, setSocket] = useState(null);
+
+  // closure trong js, hàm useEffect sẽ thực thi với các biến ở thời điểm socket có giá trị lần đầu tiên,
+  // chính vì vậy cần 2 ref tham chiếu đến 2 biến userChat và user
+  // vẫn đảm bảo được là khởi tạo nhận tin nhắn từ channel receive_mesage chỉ 1 lần
+  const userChatRef = useRef(userChat);
+  const userRef = useRef(user);
+  userChatRef.current = userChat;
+  userRef.current = user;
   useEffect(() => {
     const newSocket = io("https://hospital-backend-production-d055.up.railway.app", {
       transports: ["websocket"],
@@ -116,14 +124,13 @@ export const NavBar = ({
     if (!socket) return;
     socket.on("receive_message", (data) => {
       const { message, user } = data;
-      if (message && !checkPushNotification(message)) return;
+      if (message && !checkPushNotification(message, userRef.current, userChatRef.current)) return;
       dispatch(addNotification(user));
     });
   }, [socket]);
 
-  const checkPushNotification = (message) => {
+  const checkPushNotification = (message, user, userChat) => {
     const { hospitalId, sender, customerId } = message;
-
     if (
       hospitalId == user.currentUser.hospitalId &&
       sender == "user" &&
