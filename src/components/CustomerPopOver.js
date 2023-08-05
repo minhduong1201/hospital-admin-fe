@@ -38,7 +38,7 @@ export const CustomerPopOver = ({
       .put(`/customers/${user._id}`, user)
       .then((res) => {
         if (res && 199 < res.status < 300) {
-          const newUser = { ...res.data, heart_rate: user.heart_rate };
+          const newUser = { ...user, health: res.data.health };
           dispatch(updateCustomers([newUser]));
           alertSuccess(dispatch, "Cập nhật thành công!");
         } else {
