@@ -48,6 +48,16 @@ export const CustomerPopOver = ({
       });
   };
 
+  const formatDateTime = (data) => {
+    const date = new Date(data);
+    const hours = String(date.getUTCHours()).padStart(2, "0");
+    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Tháng trong JavaScript bắt đầu từ 0
+
+    return `${hours}:${minutes} ${day}/${month}/${date.getUTCFullYear()}`;
+  };
+
   return (
     <Popover
       id="popover-infor"
@@ -122,7 +132,7 @@ export const CustomerPopOver = ({
                     {heart_rate == null ? "Chưa có dữ liệu" : heart_rate}
                   </Typography>
                   <Typography variant="body1" style={{ whiteSpace: "normal" }}>
-                    Lần cập nhật cuối: {last_update || "Chưa có dữ liệu"}
+                    Lần cập nhật cuối:  {last_update ? formatDateTime(last_update) : "Chưa có dữ liệu"}
                   </Typography>
                 </Grid>
               </Grid>
