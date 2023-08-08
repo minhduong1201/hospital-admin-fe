@@ -50,11 +50,18 @@ export const CustomerPopOver = ({
 
   const formatDateTime = (data) => {
     const date = new Date(data);
+    
+    date.setUTCHours(date.getUTCHours() + 7);
+  
+    if (date.getUTCDay() === 6) {
+      date.setUTCDate(date.getUTCDate() + 1);
+    }
+  
     const hours = String(date.getUTCHours()).padStart(2, "0");
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
     const day = String(date.getUTCDate()).padStart(2, "0");
     const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Tháng trong JavaScript bắt đầu từ 0
-
+  
     return `${hours}:${minutes} ${day}/${month}/${date.getUTCFullYear()}`;
   };
 
