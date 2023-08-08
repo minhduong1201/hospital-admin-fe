@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -32,15 +32,25 @@ export const Customers = (props) => {
   const hospital = useSelector((state) => state.hospital.hospital);
   const customers = useSelector((state) => state.customers);
   const pageCustomers = customers.slice(startRow, endRow);
+  const firstGetRef = useRef(true);
 
   useEffect(() => {
     if (!hospital) return;
     getCustomers(hospital._id, dispatch, accessToken);
   }, []);
 
+  // khi chuyển page
   useEffect(() => {
+    if (!pageCustomers.length) return;
     getCustomersWithHeartRate(pageCustomers, dispatch, accessToken);
   }, [page]);
+
+  // get dữ liệu trang đầu tiên khi lấy được tất cả customers
+  useEffect(() => {
+    if (!pageCustomers.length || !firstGetRef.current) return;
+    getCustomersWithHeartRate(pageCustomers, dispatch, accessToken);
+    firstGetRef.current = false;
+  }, [pageCustomers]);
 
   const formatDateTime = (data) => {
     const date = new Date(data);
